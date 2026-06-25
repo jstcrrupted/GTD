@@ -1,0 +1,22 @@
+{
+  "name": "GTD Pro",
+  "short_name": "GTD Pro",
+  "start_url": "./GTD_Pro_App.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0b10",
+  "theme_color": "#0a0b10",
+  "description": "Локальное GTD-приложение с офлайн-режимом и автобэкапами.",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
