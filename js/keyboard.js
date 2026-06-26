@@ -112,9 +112,13 @@ document.addEventListener('keydown', (e) => {
 
 // ============ MOBILE / SIDEBAR ============
 export function toggleSidebar() {
-    $('#sidebar').classList.toggle('open');
+    const open = $('#sidebar').classList.toggle('open');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (overlay) overlay.classList.toggle('active', open);
 }
 
 export function closeSidebar() {
     $('#sidebar').classList.remove('open');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (overlay) overlay.classList.remove('active');
 }
