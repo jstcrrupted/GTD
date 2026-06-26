@@ -1,7 +1,7 @@
 {
   "name": "GTD Pro",
   "short_name": "GTD Pro",
-  "start_url": "./GTD_Pro_App.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0a0b10",
