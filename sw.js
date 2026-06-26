@@ -1,9 +1,21 @@
 /* GTD Pro Service Worker (offline shell) */
-const CACHE_NAME = 'gtd-pro-cache-v1';
+const CACHE_NAME = 'gtd-pro-cache-v2';
 const ASSETS = [
   './',
-  './GTD_Pro_App.html',
+  './index.html',
   './manifest.json',
+  './css/styles.css',
+  './js/core.js',
+  './js/actions.js',
+  './js/storage.js',
+  './js/model.js',
+  './js/render.js',
+  './js/views.js',
+  './js/detail.js',
+  './js/capture.js',
+  './js/settings.js',
+  './js/keyboard.js',
+  './js/app.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
 ];
@@ -38,7 +50,7 @@ self.addEventListener('fetch', (event) => {
           }
         } catch(e) {}
         return resp;
-      }).catch(() => cached || caches.match('./GTD_Pro_App.html'));
+      }).catch(() => cached || caches.match('./index.html'));
     })
   );
 });

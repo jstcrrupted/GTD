@@ -1,0 +1,315 @@
+
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTD Pro</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0b10">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app">
+    <!-- TITLE BAR -->
+    <div class="titlebar">
+        <button class="titlebar-btn menu-toggle" data-action="toggleSidebar">☰</button>
+        <div class="titlebar-logo">
+            <div class="titlebar-logo-icon">⚡</div>
+            <span>GTD Pro</span>
+        </div>
+        <div class="titlebar-search">
+            <input type="text" id="globalSearch" placeholder="Поиск по всем задачам..." data-action="handleGlobalSearch" data-on="input">
+            <span class="titlebar-search-shortcut">⌘K</span>
+        </div>
+        <div class="titlebar-actions">
+            <button class="titlebar-btn" data-action="openReview" title="Еженедельный обзор">🔄</button>
+            <button class="titlebar-btn" data-action="openShortcuts" title="Горячие клавиши">⌨️</button>
+            <button class="titlebar-btn" data-action="openSettings" title="Настройки">⚙️</button>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-quick">
+            <button class="quick-capture-btn" data-action="openCapture">
+                ＋ Быстрый захват
+                <span class="quick-capture-shortcut">N</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav" id="sidebarNav">
+            <!-- Generated -->
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="footer-btn" data-action="exportData" title="Экспорт">📤 Экспорт</button>
+            <button class="footer-btn" data-action="importData" title="Импорт">📥 Импорт</button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="view-header">
+            <div class="view-header-info">
+                <div class="view-breadcrumb" id="viewBreadcrumb">GTD</div>
+                <div class="view-title">
+                    <span class="view-title-icon" id="viewIcon">📥</span>
+                    <h1 id="viewTitle">Входящие</h1>
+                </div>
+                <div class="view-meta" id="viewMeta"></div>
+            </div>
+            <div class="view-actions" id="viewActions">
+                <!-- Dynamic -->
+            </div>
+        </div>
+
+        <div class="filter-bar" id="filterBar"></div>
+
+        <div class="content" id="content">
+            <!-- Dynamic -->
+        </div>
+    </main>
+
+    <!-- STATUS BAR -->
+    <div class="statusbar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span id="statusSync">Сохранено локально</span>
+        </div>
+        <div class="status-divider"></div>
+        <div class="status-item" id="statusTotal">📋 0 задач</div>
+        <div class="status-divider"></div>
+        <div class="status-item" id="statusDone">✅ 0 выполнено сегодня</div>
+        <div class="status-spacer"></div>
+        <div class="status-item">⚡ GTD Pro v2.0</div>
+    </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel" id="detailPanel">
+    <div class="detail-header">
+        <input type="text" class="detail-title-input" id="detailTitle" placeholder="Название задачи..." data-action="updateDetailTitle" data-on="input">
+        <div class="detail-header-actions">
+            <button class="toolbar-icon-btn" data-action="duplicateTask" title="Дублировать">📋</button>
+            <button class="toolbar-icon-btn" data-action="deleteCurrentTask" title="Удалить">🗑</button>
+            <button class="toolbar-icon-btn" data-action="closeDetail" title="Закрыть">✕</button>
+        </div>
+    </div>
+    <div class="detail-body" id="detailBody">
+        <!-- Generated -->
+    </div>
+</div>
+
+<!-- CAPTURE MODAL -->
+<div class="modal-overlay capture-modal" id="captureModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📥 Быстрый захват</h3>
+            <button class="modal-close" data-action="closeCapture">✕</button>
+        </div>
+        <div class="modal-body">
+            <input type="text" class="capture-input" id="captureInput" placeholder="Что у вас на уме?" autocomplete="off">
+            <textarea class="capture-textarea" id="captureNotes" placeholder="Заметки (необязательно)..."></textarea>
+            <div class="capture-suggestions" id="captureSuggestions"></div>
+            <div class="capture-hint">
+                💡 Используйте: <code>!1</code> <code>!2</code> <code>!3</code> приоритет · <code>@контекст</code> · <code>#тег</code> · <code>~завтра</code> или <code>~2024-12-25</code>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="toolbar-btn" data-action="closeCapture">Отмена</button>
+            <button class="toolbar-btn primary" data-action="saveCaptureAndClose">Сохранить (Enter)</button>
+        </div>
+    </div>
+</div>
+
+<!-- PROCESS MODAL -->
+<div class="modal-overlay" id="processModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>🔄 Обработка входящих</h3>
+            <button class="modal-close" data-action="closeProcess">✕</button>
+        </div>
+        <div class="modal-body" id="processBody"></div>
+    </div>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="projectModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="projectModalTitle">📁 Новый проект</h3>
+            <button class="modal-close" data-action="closeProjectModal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-field">
+                <div class="detail-field-label">Название</div>
+                <input type="text" class="detail-input" id="projectNameInput" placeholder="К чему вы стремитесь?">
+            </div>
+            <div class="detail-field">
+                <div class="detail-field-label">Желаемый результат</div>
+                <textarea class="detail-textarea" id="projectDescInput" placeholder="Как выглядит успешное завершение?"></textarea>
+            </div>
+            <div class="detail-row">
+                <div class="detail-field">
+                    <div class="detail-field-label">Цвет</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap" id="projectColorPicker"></div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-field-label">Дедлайн</div>
+                    <input type="date" class="detail-input" id="projectDeadline">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="toolbar-btn" data-action="closeProjectModal">Отмена</button>
+            <button class="toolbar-btn primary" data-action="saveProject">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<!-- TAG MODAL -->
+<div class="modal-overlay" id="tagModal">
+    <div class="modal" style="max-width:380px">
+        <div class="modal-header">
+            <h3>🏷 Новый тег</h3>
+            <button class="modal-close" data-action="closeTagModal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-field">
+                <div class="detail-field-label">Название</div>
+                <input type="text" class="detail-input" id="tagNameInput" placeholder="Название тега">
+            </div>
+            <div class="detail-field">
+                <div class="detail-field-label">Цвет</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap" id="tagColorPicker"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="toolbar-btn" data-action="closeTagModal">Отмена</button>
+            <button class="toolbar-btn primary" data-action="saveTag">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal">
+    <div class="modal" style="max-width:640px">
+        <div class="modal-header">
+            <h3>🔄 Еженедельный обзор</h3>
+            <button class="modal-close" data-action="closeReview">✕</button>
+        </div>
+        <div class="modal-body" id="reviewBody"></div>
+        <div class="modal-footer">
+            <button class="toolbar-btn" data-action="closeReview">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- SHORTCUTS MODAL -->
+<div class="modal-overlay shortcuts-modal" id="shortcutsModal">
+    <div class="modal" style="max-width:520px">
+        <div class="modal-header">
+            <h3>⌨️ Горячие клавиши</h3>
+            <button class="modal-close" data-action="closeShortcuts">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="shortcut-group">
+                <div class="shortcut-group-title">Общие</div>
+                <div class="shortcut-row"><span>Быстрый захват</span><div class="shortcut-keys"><span class="shortcut-key">N</span></div></div>
+                <div class="shortcut-row"><span>Глобальный поиск</span><div class="shortcut-keys"><span class="shortcut-key">⌘</span><span class="shortcut-key">K</span></div></div>
+                <div class="shortcut-row"><span>Обработать входящие</span><div class="shortcut-keys"><span class="shortcut-key">P</span></div></div>
+                <div class="shortcut-row"><span>Еженедельный обзор</span><div class="shortcut-keys"><span class="shortcut-key">R</span></div></div>
+                <div class="shortcut-row"><span>Закрыть/Отмена</span><div class="shortcut-keys"><span class="shortcut-key">Esc</span></div></div>
+            </div>
+            <div class="shortcut-group">
+                <div class="shortcut-group-title">Навигация</div>
+                <div class="shortcut-row"><span>Входящие</span><div class="shortcut-keys"><span class="shortcut-key">G</span><span class="shortcut-key">I</span></div></div>
+                <div class="shortcut-row"><span>Следующие действия</span><div class="shortcut-keys"><span class="shortcut-key">G</span><span class="shortcut-key">N</span></div></div>
+                <div class="shortcut-row"><span>Календарь</span><div class="shortcut-keys"><span class="shortcut-key">G</span><span class="shortcut-key">C</span></div></div>
+                <div class="shortcut-row"><span>Проекты</span><div class="shortcut-keys"><span class="shortcut-key">G</span><span class="shortcut-key">P</span></div></div>
+                <div class="shortcut-row"><span>Дашборд</span><div class="shortcut-keys"><span class="shortcut-key">G</span><span class="shortcut-key">D</span></div></div>
+            </div>
+            <div class="shortcut-group">
+                <div class="shortcut-group-title">Задачи</div>
+                <div class="shortcut-row"><span>Новая задача</span><div class="shortcut-keys"><span class="shortcut-key">A</span></div></div>
+                <div class="shortcut-row"><span>Открыть детали</span><div class="shortcut-keys"><span class="shortcut-key">Enter</span></div></div>
+                <div class="shortcut-row"><span>Отметить выполненной</span><div class="shortcut-keys"><span class="shortcut-key">Space</span></div></div>
+                <div class="shortcut-row"><span>Удалить</span><div class="shortcut-keys"><span class="shortcut-key">Del</span></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+    <div class="modal" style="max-width:480px">
+        <div class="modal-header">
+            <h3>⚙️ Настройки</h3>
+            <button class="modal-close" data-action="closeSettings">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-field">
+                <div class="detail-field-label">Управление данными</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                    <button class="toolbar-btn" data-action="exportData">📤 Экспортировать в JSON</button>
+                    <button class="toolbar-btn" data-action="importData">📥 Импортировать из JSON</button>
+                    <button class="toolbar-btn" data-action="loadDemoData">🎯 Загрузить демо-данные</button>
+                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearAllData">🗑 Очистить все данные</button>
+                </div>
+            </div>
+            
+            <div class="detail-field">
+                <div class="detail-field-label">Резервные копии и восстановление</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                    <button class="toolbar-btn" data-action="createBackupNow">🧩 Создать бэкап сейчас</button>
+                    <button class="toolbar-btn" data-action="restoreLatestBackup">⏪ Восстановить последний бэкап</button>
+                    <button class="toolbar-btn" data-action="exportFullBackup">📦 Экспорт приложения (полный бэкап)</button>
+                    <button class="toolbar-btn" data-action="importFullBackup">📥 Импорт полного бэкапа</button>
+                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearBackups">🧹 Очистить историю бэкапов</button>
+                </div>
+                <div class="install-hint">Автобэкапы создаются автоматически каждые 2 минуты и перед рискованными действиями (импорт/очистка).</div>
+                <div id="backupList" class="backup-list"></div>
+            </div>
+
+            <div class="detail-field">
+                <div class="detail-field-label">Установка (PWA)</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                    <button class="toolbar-btn" data-action="promptInstallPWA">⬇️ Установить приложение</button>
+                </div>
+                <div class="install-hint" id="installHint">Если кнопка неактивна — откройте сайт по HTTPS и добавьте на главный экран через меню браузера.</div>
+            </div>
+
+            <!-- Full backup file input -->
+            <input type="file" id="fullBackupInput" accept=".json" style="display:none" data-action="handleFullBackupImport" data-on="change">
+
+            <div class="detail-field">
+                <div class="detail-field-label">О приложении</div>
+                <div style="font-size:12px;color:var(--text-3);line-height:1.6">
+                    <strong>GTD Pro v2.0</strong><br>
+                    Полнофункциональное приложение для управления задачами по методологии Getting Things Done Дэвида Аллена.<br><br>
+                    Все данные хранятся локально в вашем браузере.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="context-menu" id="contextMenu"></div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FILE INPUT -->
+<input type="file" id="fileInput" accept=".json" style="display:none" data-action="handleFileImport" data-on="change">
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
