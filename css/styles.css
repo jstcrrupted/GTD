@@ -2242,11 +2242,18 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
     .titlebar-logo span { display: none; }   /* keep the ⚡ icon only */
     .titlebar-search { max-width: none; margin: 0; }
 
-    /* View header: wrap actions under the title, smaller type */
-    .view-header { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
+    /* View header: stack title above actions so the title never gets
+       squeezed/overlapped by the buttons */
+    .view-header {
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .view-header-info { min-width: 0; }
     .view-title h1 { font-size: 18px; }
     .view-title-icon { font-size: 18px; }
-    .view-actions { flex-wrap: wrap; }
+    .view-actions { flex-wrap: wrap; width: 100%; }
 
     /* Content: tighter horizontal padding */
     .content { padding: 12px 14px 20px; }
