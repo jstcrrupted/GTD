@@ -42,7 +42,7 @@ import {
     clearAllData, loadDemoData, seedDemoData, handleGlobalSearch, promptInstallPWA
 } from './settings.js';
 
-import { showTaskContext, hideContextMenu, toggleSidebar } from './keyboard.js';
+import { showTaskContext, hideContextMenu, toggleSidebar, closeSidebar } from './keyboard.js';
 
 // ============ REGISTER ALL ACTIONS ============
 registerActions({
@@ -57,6 +57,7 @@ registerActions({
     clearFilter: (c) => clearFilter(c.arg),
     toggleCollapse: (c) => c.el.parentElement.classList.toggle('collapsed'),
     toggleSidebar: () => toggleSidebar(),
+    closeSidebar: () => closeSidebar(),
 
     // Tasks (list / card)
     selectTask: (c) => selectTask(c.id, c.event),
