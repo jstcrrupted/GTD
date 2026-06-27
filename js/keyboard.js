@@ -67,8 +67,8 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    // Cmd+K
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    // Cmd+K — use e.code so it works regardless of keyboard layout
+    if ((e.metaKey || e.ctrlKey) && e.code === 'KeyK') {
         e.preventDefault();
         $('#globalSearch').focus();
         return;
@@ -82,13 +82,26 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    // Single key shortcuts
-    if (e.key === 'n' || e.key === 'N') { e.preventDefault(); openCapture(); }
-    else if (e.key === 'p' || e.key === 'P') { e.preventDefault(); startProcess(); }
-    else if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openReview(); }
+    // G navigation: if previous key was 'g', this key picks the destination.
+    // Checked FIRST so single-key shortcuts (n/p/r/a) don't shadow g→n etc.
+    if (lastKey === 'g' && (Date.now() - lastKeyTime) < 1000) {
+        lastKey = '';
+        const navMap = {
+            KeyI: 'inbox', KeyN: 'next', KeyW: 'waiting', KeyC: 'calendar',
+            KeyP: 'projects', KeyS: 'someday', KeyR: 'reference', KeyD: 'dashboard', KeyT: 'today'
+        };
+        const view = navMap[e.code];
+        if (view) { e.preventDefault(); switchView(view); return; }
+    }
+
+    // Single key shortcuts — e.code is physical key, independent of RU/EN layout
+    if (e.code === 'KeyN') { e.preventDefault(); openCapture(); }
+    else if (e.code === 'KeyP') { e.preventDefault(); startProcess(); }
+    else if (e.code === 'KeyR') { e.preventDefault(); openReview(); }
+    else if (e.code === 'KeyA') { e.preventDefault(); quickAddInList(); }
+    else if (e.code === 'KeyG') { lastKey = 'g'; lastKeyTime = Date.now(); }
     else if (e.key === '?') { e.preventDefault(); openShortcuts(); }
-    else if (e.key === 'a' || e.key === 'A') { e.preventDefault(); quickAddInList(); }
-    else if (e.key === ' ') {
+    else if (e.code === 'Space') {
         if (state.selectedTaskId) { e.preventDefault(); toggleComplete(state.selectedTaskId); }
     }
     else if (e.key === 'Enter') {
@@ -96,17 +109,6 @@ document.addEventListener('keydown', (e) => {
     }
     else if (e.key === 'Delete' || e.key === 'Backspace') {
         if (state.selectedTaskId) { e.preventDefault(); trashTask(state.selectedTaskId); }
-    }
-    // G navigation
-    else if (e.key === 'g' || e.key === 'G') { lastKey = 'g'; lastKeyTime = Date.now(); }
-    else if (lastKey === 'g' && (Date.now() - lastKeyTime) < 1000) {
-        const navMap = { i: 'inbox', n: 'next', w: 'waiting', c: 'calendar', p: 'projects', s: 'someday', r: 'reference', d: 'dashboard', t: 'today' };
-        const view = navMap[e.key.toLowerCase()];
-        if (view) {
-            e.preventDefault();
-            switchView(view);
-        }
-        lastKey = '';
     }
 });
 

@@ -318,6 +318,10 @@ export function renderContent() {
     const view = state.currentView;
     const c = $('#content');
 
+    // Global search mode: a non-empty query searches across ALL tasks and
+    // takes over rendering completely, regardless of the active view.
+    if (state.searchQuery.trim()) return renderSearchResults(c);
+
     if (view === 'dashboard') return renderDashboard(c);
     if (view === 'projects') return renderProjects(c);
     if (view === 'calendar') return renderCalendar(c);
@@ -325,15 +329,6 @@ export function renderContent() {
     if (view === 'overdue') return renderOverdue(c);
 
     let tasks = getTasksForView(view);
-
-    if (state.searchQuery) {
-        const q = state.searchQuery.toLowerCase();
-        tasks = tasks.filter(t =>
-            t.title.toLowerCase().includes(q) ||
-            (t.notes || '').toLowerCase().includes(q) ||
-            (t.tags || []).some(tag => tag.toLowerCase().includes(q))
-        );
-    }
 
     // Apply filters
     if (state.filters.context) tasks = tasks.filter(t => t.context === state.filters.context);
@@ -398,6 +393,44 @@ export function renderContent() {
     // Clear actions
     if (view === 'trash' && tasks.length > 0) {
         html += `<div style="margin-top:20px;text-align:center"><button class="toolbar-btn" style="color:var(--danger)" data-action="emptyTrash">🗑 Очистить корзину</button></div>`;
+    }
+
+    c.innerHTML = html;
+}
+
+// ============ GLOBAL SEARCH RESULTS ============
+export function renderSearchResults(c) {
+    const q = state.searchQuery.trim().toLowerCase();
+    const matches = state.tasks.filter(t =>
+        t.list !== 'trash' &&
+        (
+            (t.title || '').toLowerCase().includes(q) ||
+            (t.notes || '').toLowerCase().includes(q) ||
+            (t.tags || []).some(tag => tag.toLowerCase().includes(q))
+        )
+    );
+
+    const sorted = sortTasks(matches);
+
+    let html = `
+        <div class="task-section-header" style="cursor:default">
+            <button class="toolbar-btn" data-action="clearSearch" title="Вернуться к текущему виду">← Назад</button>
+            <span class="task-section-title">🔍 Поиск: «${escapeHtml(state.searchQuery.trim())}»</span>
+            <span class="task-section-count">${sorted.length}</span>
+            <span class="task-section-divider"></span>
+        </div>`;
+
+    if (!sorted.length) {
+        html += `
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <h3>Ничего не найдено</h3>
+                <p>По запросу нет задач. Попробуйте изменить запрос.</p>
+            </div>`;
+    } else {
+        html += `<div class="task-list">` +
+            sorted.map(t => renderTaskItem(t)).join('') +
+            `</div>`;
     }
 
     c.innerHTML = html;

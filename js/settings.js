@@ -19,9 +19,14 @@ export function closeSettings() {
 // ============ SEARCH ============
 export function handleGlobalSearch(e) {
     state.searchQuery = e.target.value;
-    if (state.searchQuery && state.currentView === 'dashboard') {
-        state.currentView = 'next';
-    }
+    renderContent();
+}
+
+// Exit search mode and return to the currently active view.
+export function clearSearch() {
+    state.searchQuery = '';
+    const input = $('#globalSearch');
+    if (input) input.value = '';
     renderContent();
 }
 
