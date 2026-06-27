@@ -124,15 +124,43 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
     background: var(--bg-elev-2);
 }
 
-.titlebar-search::before {
-    content: '🔍';
+.titlebar-search .search-icon {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 11px;
+    width: 14px;
+    height: 14px;
     opacity: 0.5;
+    pointer-events: none;
 }
+
+/* ============ ICONS (Lucide sprite) ============ */
+.icon {
+    width: 1em;
+    height: 1em;
+    stroke-width: 2;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}
+.titlebar-btn .icon { width: 16px; height: 16px; }
+.nav-icon .icon { width: 16px; height: 16px; }
+.toolbar-btn .icon { width: 14px; height: 14px; }
+.toolbar-icon-btn .icon { width: 16px; height: 16px; }
+.task-action-btn .icon { width: 14px; height: 14px; }
+.modal-close .icon { width: 16px; height: 16px; }
+.modal-header h3 .icon { width: 18px; height: 18px; }
+.detail-field-label .icon { width: 14px; height: 14px; }
+.view-title-icon .icon { width: 22px; height: 22px; }
+.status-item .icon { width: 13px; height: 13px; }
+.footer-btn .icon { width: 14px; height: 14px; }
+.titlebar-logo-icon .icon { width: 18px; height: 18px; }
+.stat-card-icon .icon { width: 16px; height: 16px; }
+.empty-icon .icon { width: 48px; height: 48px; }
+.process-option-icon .icon { width: 22px; height: 22px; }
+.context-menu-icon .icon { width: 14px; height: 14px; }
+.task-badge .icon { width: 11px; height: 11px; vertical-align: -1px; }
+.level-dot { vertical-align: -1px; margin-right: 6px; }
 
 .titlebar-actions {
     display: flex;

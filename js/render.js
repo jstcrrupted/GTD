@@ -1,7 +1,7 @@
 'use strict';
 
 // ============ RENDER: navigation, views shell, task list ============
-import { state, $, escapeHtml, todayStr, formatDate, PROJECT_COLORS } from './core.js';
+import { state, $, escapeHtml, todayStr, formatDate, PROJECT_COLORS, icon, levelDot } from './core.js';
 import {
     renderDashboard, renderProjects, renderCalendar, renderTags, renderOverdue, renderKanban
 } from './views.js';
@@ -18,14 +18,14 @@ export function renderSidebar() {
         <div class="nav-section">
             <div class="nav-section-header"><span class="nav-section-title">Обзор</span></div>
             <div class="nav-item ${state.currentView === 'dashboard' ? 'active' : ''}" data-action="switchView" data-view="dashboard">
-                <span class="nav-icon">📊</span><span class="nav-label">Дашборд</span>
+                <span class="nav-icon">${icon('chart')}</span><span class="nav-label">Дашборд</span>
             </div>
             <div class="nav-item ${state.currentView === 'today' ? 'active' : ''}" data-action="switchView" data-view="today">
-                <span class="nav-icon">⭐</span><span class="nav-label">Сегодня</span>
+                <span class="nav-icon">${icon('star')}</span><span class="nav-label">Сегодня</span>
                 ${counts.today > 0 ? `<span class="nav-count">${counts.today}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'overdue' ? 'active' : ''}" data-action="switchView" data-view="overdue">
-                <span class="nav-icon">🔥</span><span class="nav-label">Просрочено</span>
+                <span class="nav-icon">${icon('flame')}</span><span class="nav-label">Просрочено</span>
                 ${overdueCount > 0 ? `<span class="nav-item-tag">${overdueCount}</span>` : ''}
             </div>
         </div>
@@ -33,7 +33,7 @@ export function renderSidebar() {
         <div class="nav-section">
             <div class="nav-section-header"><span class="nav-section-title">Сбор</span></div>
             <div class="nav-item ${state.currentView === 'inbox' ? 'active' : ''}" data-action="switchView" data-view="inbox">
-                <span class="nav-icon">📥</span><span class="nav-label">Входящие</span>
+                <span class="nav-icon">${icon('inbox')}</span><span class="nav-label">Входящие</span>
                 ${inboxCount > 0 ? `<span class="nav-item-tag" style="background:var(--accent)">${inboxCount}</span>` : ''}
             </div>
         </div>
@@ -41,15 +41,15 @@ export function renderSidebar() {
         <div class="nav-section">
             <div class="nav-section-header"><span class="nav-section-title">Действия</span></div>
             <div class="nav-item ${state.currentView === 'next' ? 'active' : ''}" data-action="switchView" data-view="next">
-                <span class="nav-icon">⚡</span><span class="nav-label">Следующие</span>
+                <span class="nav-icon">${icon('zap')}</span><span class="nav-label">Следующие</span>
                 ${counts.next > 0 ? `<span class="nav-count">${counts.next}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'waiting' ? 'active' : ''}" data-action="switchView" data-view="waiting">
-                <span class="nav-icon">⏳</span><span class="nav-label">Ожидания</span>
+                <span class="nav-icon">${icon('clock')}</span><span class="nav-label">Ожидания</span>
                 ${counts.waiting > 0 ? `<span class="nav-count">${counts.waiting}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'calendar' ? 'active' : ''}" data-action="switchView" data-view="calendar">
-                <span class="nav-icon">📅</span><span class="nav-label">Календарь</span>
+                <span class="nav-icon">${icon('calendar')}</span><span class="nav-label">Календарь</span>
                 ${counts.calendar > 0 ? `<span class="nav-count">${counts.calendar}</span>` : ''}
             </div>
         </div>
@@ -60,7 +60,7 @@ export function renderSidebar() {
                 <button class="nav-section-add" data-action="openProjectModal" title="Новый проект">+</button>
             </div>
             <div class="nav-item ${state.currentView === 'projects' ? 'active' : ''}" data-action="switchView" data-view="projects">
-                <span class="nav-icon">📁</span><span class="nav-label">Все проекты</span>
+                <span class="nav-icon">${icon('folder')}</span><span class="nav-label">Все проекты</span>
                 ${state.projects.length > 0 ? `<span class="nav-count">${state.projects.length}</span>` : ''}
             </div>
             ${state.projects.slice(0, 10).map(p => {
@@ -80,7 +80,7 @@ export function renderSidebar() {
                 <button class="nav-section-add" data-action="openTagModal" title="Новый тег">+</button>
             </div>
             <div class="nav-item ${state.currentView === 'tags' ? 'active' : ''}" data-action="switchView" data-view="tags">
-                <span class="nav-icon">🏷</span><span class="nav-label">Все теги</span>
+                <span class="nav-icon">${icon('tag')}</span><span class="nav-label">Все теги</span>
                 ${state.tags.length > 0 ? `<span class="nav-count">${state.tags.length}</span>` : ''}
             </div>
             ${state.tags.slice(0,8).map(tag => {
@@ -97,19 +97,19 @@ export function renderSidebar() {
         <div class="nav-section">
             <div class="nav-section-header"><span class="nav-section-title">Хранилище</span></div>
             <div class="nav-item ${state.currentView === 'someday' ? 'active' : ''}" data-action="switchView" data-view="someday">
-                <span class="nav-icon">💭</span><span class="nav-label">Когда-нибудь</span>
+                <span class="nav-icon">${icon('cloud')}</span><span class="nav-label">Когда-нибудь</span>
                 ${counts.someday > 0 ? `<span class="nav-count">${counts.someday}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'reference' ? 'active' : ''}" data-action="switchView" data-view="reference">
-                <span class="nav-icon">📚</span><span class="nav-label">Справочные</span>
+                <span class="nav-icon">${icon('book')}</span><span class="nav-label">Справочные</span>
                 ${counts.reference > 0 ? `<span class="nav-count">${counts.reference}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'done' ? 'active' : ''}" data-action="switchView" data-view="done">
-                <span class="nav-icon">✅</span><span class="nav-label">Выполнено</span>
+                <span class="nav-icon">${icon('check-circle')}</span><span class="nav-label">Выполнено</span>
                 ${counts.done > 0 ? `<span class="nav-count">${counts.done}</span>` : ''}
             </div>
             <div class="nav-item ${state.currentView === 'trash' ? 'active' : ''}" data-action="switchView" data-view="trash">
-                <span class="nav-icon">🗑</span><span class="nav-label">Корзина</span>
+                <span class="nav-icon">${icon('trash')}</span><span class="nav-label">Корзина</span>
                 ${counts.trash > 0 ? `<span class="nav-count">${counts.trash}</span>` : ''}
             </div>
         </div>
@@ -169,7 +169,7 @@ export function renderHeader() {
     const view = state.currentView;
     const viewInfo = getViewInfo(view);
     $('#viewBreadcrumb').textContent = viewInfo.breadcrumb;
-    $('#viewIcon').textContent = viewInfo.icon;
+    $('#viewIcon').innerHTML = icon(viewInfo.icon);
     $('#viewTitle').textContent = viewInfo.title;
     $('#viewMeta').textContent = viewInfo.meta || '';
 
@@ -180,22 +180,22 @@ export function renderHeader() {
     if (view === 'inbox') {
         const inboxCount = state.tasks.filter(t => t.list === 'inbox').length;
         if (inboxCount > 0) {
-            actions += `<button class="toolbar-btn" data-action="startProcess">🔄 Обработать (${inboxCount})</button>`;
+            actions += `<button class="toolbar-btn" data-action="startProcess">${icon('refresh')} Обработать (${inboxCount})</button>`;
         }
     }
     if (view === 'projects') {
         actions += `<button class="toolbar-btn primary" data-action="openProjectModal">＋ Проект</button>`;
     }
     if (view === 'project' && state.currentProjectId) {
-        actions += `<button class="toolbar-btn" data-action="editProject" data-id="${state.currentProjectId}">✏️ Изменить</button>`;
-        actions += `<button class="toolbar-btn" data-action="deleteProject" data-id="${state.currentProjectId}">🗑</button>`;
+        actions += `<button class="toolbar-btn" data-action="editProject" data-id="${state.currentProjectId}">${icon('edit')} Изменить</button>`;
+        actions += `<button class="toolbar-btn" data-action="deleteProject" data-id="${state.currentProjectId}" aria-label="Удалить проект">${icon('trash')}</button>`;
     }
     // View mode toggle (for next, today, project)
     if (['next', 'today', 'project'].includes(view)) {
         actions += `
             <div style="display:flex;gap:0;background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:2px;margin-left:8px">
-                <button class="toolbar-icon-btn ${state.viewMode === 'list' ? 'active' : ''}" style="border:none" data-action="setViewMode" data-arg="list" title="Список">☰</button>
-                <button class="toolbar-icon-btn ${state.viewMode === 'kanban' ? 'active' : ''}" style="border:none" data-action="setViewMode" data-arg="kanban" title="Канбан">▦</button>
+                <button class="toolbar-icon-btn ${state.viewMode === 'list' ? 'active' : ''}" style="border:none" data-action="setViewMode" data-arg="list" title="Список" aria-label="Список">${icon('menu')}</button>
+                <button class="toolbar-icon-btn ${state.viewMode === 'kanban' ? 'active' : ''}" style="border:none" data-action="setViewMode" data-arg="kanban" title="Канбан" aria-label="Канбан">${icon('kanban')}</button>
             </div>
         `;
     }
@@ -204,36 +204,36 @@ export function renderHeader() {
 
 export function getViewInfo(view) {
     const info = {
-        dashboard: { breadcrumb: 'Обзор', icon: '📊', title: 'Дашборд', meta: 'Аналитика и статистика' },
-        today: { breadcrumb: 'Обзор', icon: '⭐', title: 'Сегодня', meta: 'Задачи на сегодня' },
-        overdue: { breadcrumb: 'Обзор', icon: '🔥', title: 'Просроченные', meta: 'Требуют внимания' },
-        inbox: { breadcrumb: 'GTD · Сбор', icon: '📥', title: 'Входящие', meta: 'Соберите все, что у вас на уме' },
-        next: { breadcrumb: 'GTD · Действия', icon: '⚡', title: 'Следующие действия', meta: 'Что можно сделать прямо сейчас' },
-        waiting: { breadcrumb: 'GTD · Действия', icon: '⏳', title: 'Ожидания', meta: 'Делегированные задачи' },
-        calendar: { breadcrumb: 'GTD · Действия', icon: '📅', title: 'Календарь', meta: 'Задачи на конкретные даты' },
-        projects: { breadcrumb: 'GTD · Организация', icon: '📁', title: 'Проекты', meta: `${state.projects.length} активных проектов` },
-        someday: { breadcrumb: 'GTD · Хранилище', icon: '💭', title: 'Когда-нибудь / Может быть', meta: 'Идеи на будущее' },
-        reference: { breadcrumb: 'GTD · Хранилище', icon: '📚', title: 'Справочные материалы', meta: 'Информация для хранения' },
-        done: { breadcrumb: 'Архив', icon: '✅', title: 'Выполнено', meta: 'Завершенные задачи' },
-        trash: { breadcrumb: 'Архив', icon: '🗑', title: 'Корзина', meta: 'Удаленные элементы' },
-        tags: { breadcrumb: 'Организация', icon: '🏷', title: 'Все теги', meta: `${state.tags.length} тегов` }
+        dashboard: { breadcrumb: 'Обзор', icon: 'chart', title: 'Дашборд', meta: 'Аналитика и статистика' },
+        today: { breadcrumb: 'Обзор', icon: 'star', title: 'Сегодня', meta: 'Задачи на сегодня' },
+        overdue: { breadcrumb: 'Обзор', icon: 'flame', title: 'Просроченные', meta: 'Требуют внимания' },
+        inbox: { breadcrumb: 'GTD · Сбор', icon: 'inbox', title: 'Входящие', meta: 'Соберите все, что у вас на уме' },
+        next: { breadcrumb: 'GTD · Действия', icon: 'zap', title: 'Следующие действия', meta: 'Что можно сделать прямо сейчас' },
+        waiting: { breadcrumb: 'GTD · Действия', icon: 'clock', title: 'Ожидания', meta: 'Делегированные задачи' },
+        calendar: { breadcrumb: 'GTD · Действия', icon: 'calendar', title: 'Календарь', meta: 'Задачи на конкретные даты' },
+        projects: { breadcrumb: 'GTD · Организация', icon: 'folder', title: 'Проекты', meta: `${state.projects.length} активных проектов` },
+        someday: { breadcrumb: 'GTD · Хранилище', icon: 'cloud', title: 'Когда-нибудь / Может быть', meta: 'Идеи на будущее' },
+        reference: { breadcrumb: 'GTD · Хранилище', icon: 'book', title: 'Справочные материалы', meta: 'Информация для хранения' },
+        done: { breadcrumb: 'Архив', icon: 'check-circle', title: 'Выполнено', meta: 'Завершенные задачи' },
+        trash: { breadcrumb: 'Архив', icon: 'trash', title: 'Корзина', meta: 'Удаленные элементы' },
+        tags: { breadcrumb: 'Организация', icon: 'tag', title: 'Все теги', meta: `${state.tags.length} тегов` }
     };
     if (view === 'project' && state.currentProjectId) {
         const p = state.projects.find(p => p.id === state.currentProjectId);
         if (p) {
             const pTasks = state.tasks.filter(t => t.projectId === p.id && t.list !== 'trash');
             const done = pTasks.filter(t => t.completed).length;
-            return { breadcrumb: 'Проект', icon: '📁', title: p.title, meta: `${done} из ${pTasks.length} выполнено` };
+            return { breadcrumb: 'Проект', icon: 'folder', title: p.title, meta: `${done} из ${pTasks.length} выполнено` };
         }
     }
     if (view === 'tag' && state.currentTagId) {
         const t = state.tags.find(t => t.id === state.currentTagId);
         if (t) {
             const tasks = state.tasks.filter(task => task.tags && task.tags.includes(t.name) && task.list !== 'trash');
-            return { breadcrumb: 'Тег', icon: '🏷', title: '#' + t.name, meta: `${tasks.length} задач` };
+            return { breadcrumb: 'Тег', icon: 'tag', title: '#' + t.name, meta: `${tasks.length} задач` };
         }
     }
-    return info[view] || { breadcrumb: '', icon: '📋', title: 'View', meta: '' };
+    return info[view] || { breadcrumb: '', icon: 'list', title: 'View', meta: '' };
 }
 
 export function renderFilters() {
@@ -270,7 +270,7 @@ export function renderFilters() {
 
     // Quick filters
     html += `<div class="filter-divider"></div>`;
-    html += `<div class="filter-chip ${state.showCompleted ? 'active' : ''}" data-action="toggleCompleted">${state.showCompleted ? '✓ ' : ''}Показать выполненные</div>`;
+    html += `<div class="filter-chip ${state.showCompleted ? 'active' : ''}" data-action="toggleCompleted">${state.showCompleted ? icon('check') + ' ' : ''}Показать выполненные</div>`;
 
     // Active filters
     if (state.filters.context || state.filters.energy || state.filters.priority) {
@@ -392,7 +392,7 @@ export function renderContent() {
 
     // Clear actions
     if (view === 'trash' && tasks.length > 0) {
-        html += `<div style="margin-top:20px;text-align:center"><button class="toolbar-btn" style="color:var(--danger)" data-action="emptyTrash">🗑 Очистить корзину</button></div>`;
+        html += `<div style="margin-top:20px;text-align:center"><button class="toolbar-btn" style="color:var(--danger)" data-action="emptyTrash">${icon('trash')} Очистить корзину</button></div>`;
     }
 
     c.innerHTML = html;
@@ -415,7 +415,7 @@ export function renderSearchResults(c) {
     let html = `
         <div class="task-section-header" style="cursor:default">
             <button class="toolbar-btn" data-action="clearSearch" title="Вернуться к текущему виду">← Назад</button>
-            <span class="task-section-title">🔍 Поиск: «${escapeHtml(state.searchQuery.trim())}»</span>
+            <span class="task-section-title">${icon('search')} Поиск: «${escapeHtml(state.searchQuery.trim())}»</span>
             <span class="task-section-count">${sorted.length}</span>
             <span class="task-section-divider"></span>
         </div>`;
@@ -423,7 +423,7 @@ export function renderSearchResults(c) {
     if (!sorted.length) {
         html += `
             <div class="empty-state">
-                <div class="empty-icon">🔍</div>
+                <div class="empty-icon">${icon('search')}</div>
                 <h3>Ничего не найдено</h3>
                 <p>По запросу нет задач. Попробуйте изменить запрос.</p>
             </div>`;
@@ -480,14 +480,14 @@ export function groupTasks(tasks, by) {
     tasks.forEach(t => {
         let key = 'Без категории';
         if (by === 'priority') {
-            key = t.priority === 'high' ? '🔴 Высокий приоритет' : t.priority === 'medium' ? '🟡 Средний приоритет' : t.priority === 'low' ? '🟢 Низкий приоритет' : '⚪ Без приоритета';
+            key = t.priority === 'high' ? 'Высокий приоритет' : t.priority === 'medium' ? 'Средний приоритет' : t.priority === 'low' ? 'Низкий приоритет' : 'Без приоритета';
         } else if (by === 'context') {
-            key = t.context || '⚪ Без контекста';
+            key = t.context || 'Без контекста';
         } else if (by === 'project') {
             const p = state.projects.find(p => p.id === t.projectId);
-            key = p ? `📁 ${p.title}` : '⚪ Без проекта';
+            key = p ? p.title : 'Без проекта';
         } else if (by === 'energy') {
-            key = t.energy === 'high' ? '🔴 Высокая энергия' : t.energy === 'medium' ? '🟡 Средняя энергия' : t.energy === 'low' ? '🟢 Низкая энергия' : '⚪ Не указана';
+            key = t.energy === 'high' ? 'Высокая энергия' : t.energy === 'medium' ? 'Средняя энергия' : t.energy === 'low' ? 'Низкая энергия' : 'Не указана';
         }
         if (!groups[key]) groups[key] = [];
         groups[key].push(t);
@@ -505,25 +505,25 @@ export function renderTaskItem(task) {
 
     let metaItems = [];
     if (task.context) metaItems.push(`<span class="task-badge context">${escapeHtml(task.context)}</span>`);
-    if (project) metaItems.push(`<span class="task-badge project" style="color:${project.color}">📁 ${escapeHtml(project.title)}</span>`);
+    if (project) metaItems.push(`<span class="task-badge project" style="color:${project.color}">${icon('folder')} ${escapeHtml(project.title)}</span>`);
     if (task.date) {
         const isOverdue = task.date < todayStr() && !task.completed;
         const isToday = task.date === todayStr();
         const cls = isOverdue ? 'overdue' : isToday ? 'today' : '';
-        metaItems.push(`<span class="task-badge date ${cls}">📅 ${formatDate(task.date)}${task.time ? ' ' + task.time : ''}</span>`);
+        metaItems.push(`<span class="task-badge date ${cls}">${icon('calendar')} ${formatDate(task.date)}${task.time ? ' ' + task.time : ''}</span>`);
     }
     if (task.energy) {
-        const labels = { high: '🔴 High', medium: '🟡 Med', low: '🟢 Low' };
-        metaItems.push(`<span class="task-badge energy-${task.energy}">${labels[task.energy]}</span>`);
+        const labels = { high: 'High', medium: 'Med', low: 'Low' };
+        metaItems.push(`<span class="task-badge energy-${task.energy}">${levelDot(task.energy)}${labels[task.energy]}</span>`);
     }
-    if (task.timeEstimate) metaItems.push(`<span class="task-badge time">⏱ ${escapeHtml(task.timeEstimate)}</span>`);
-    if (task.waitingFor) metaItems.push(`<span class="task-badge waiting">→ ${escapeHtml(task.waitingFor)}</span>`);
+    if (task.timeEstimate) metaItems.push(`<span class="task-badge time">${icon('clock')} ${escapeHtml(task.timeEstimate)}</span>`);
+    if (task.waitingFor) metaItems.push(`<span class="task-badge waiting">${icon('user')} ${escapeHtml(task.waitingFor)}</span>`);
     (task.tags || []).forEach(tag => {
         const tagObj = state.tags.find(t => t.name === tag);
         const color = tagObj ? tagObj.color : 'var(--text-3)';
         metaItems.push(`<span class="task-badge tag" style="color:${color}">#${escapeHtml(tag)}</span>`);
     });
-    if (task.notes) metaItems.push(`<span class="task-indicator">📝</span>`);
+    if (task.notes) metaItems.push(`<span class="task-indicator">${icon('note')}</span>`);
 
     return `
         <div class="task-item ${isSelected} ${completedClass} ${priorityClass}" data-id="${task.id}"
@@ -542,8 +542,8 @@ export function renderTaskItem(task) {
                 ` : ''}
             </div>
             <div class="task-actions">
-                <button class="task-action-btn" data-action="openDetail" data-id="${task.id}" title="Открыть">↗</button>
-                <button class="task-action-btn delete" data-action="trashTask" data-id="${task.id}" title="Удалить">🗑</button>
+                <button class="task-action-btn" data-action="openDetail" data-id="${task.id}" title="Открыть" aria-label="Открыть">${icon('external')}</button>
+                <button class="task-action-btn delete" data-action="trashTask" data-id="${task.id}" title="Удалить" aria-label="Удалить">${icon('trash')}</button>
             </div>
         </div>
     `;
@@ -551,22 +551,22 @@ export function renderTaskItem(task) {
 
 export function renderEmptyState(view) {
     const states = {
-        inbox: { i: '📥', t: 'Входящие пусты', d: 'Голова свободна. Захватите новые мысли через быстрый захват (N).', a: 'Захватить мысль', f: 'openCapture' },
-        next: { i: '⚡', t: 'Нет следующих действий', d: 'Обработайте входящие, чтобы определить конкретные действия.', a: 'Обработать входящие', f: 'startProcess' },
-        waiting: { i: '⏳', t: 'Нет ожиданий', d: 'Делегированные задачи появятся здесь.' },
-        calendar: { i: '📅', t: 'Календарь пуст', d: 'Задачи с конкретными датами появятся здесь.' },
-        someday: { i: '💭', t: 'Нет идей на будущее', d: 'Сохраняйте идеи и мечты для будущего рассмотрения.' },
-        reference: { i: '📚', t: 'Нет справочных материалов', d: 'Полезная информация для хранения.' },
-        done: { i: '🎉', t: 'Пока ничего не сделано', d: 'Выполненные задачи появятся здесь.' },
-        trash: { i: '🗑', t: 'Корзина пуста', d: 'Удаленные элементы.' },
-        today: { i: '⭐', t: 'На сегодня ничего нет', d: 'Свободный день! Или запланируйте задачи.' },
-        project: { i: '📁', t: 'В проекте нет задач', d: 'Добавьте задачи в этот проект.' },
-        tag: { i: '🏷', t: 'Нет задач с этим тегом', d: 'Добавьте тег к задачам в детальной панели.' }
+        inbox: { i: 'inbox', t: 'Входящие пусты', d: 'Голова свободна. Захватите новые мысли через быстрый захват (N).', a: 'Захватить мысль', f: 'openCapture' },
+        next: { i: 'zap', t: 'Нет следующих действий', d: 'Обработайте входящие, чтобы определить конкретные действия.', a: 'Обработать входящие', f: 'startProcess' },
+        waiting: { i: 'clock', t: 'Нет ожиданий', d: 'Делегированные задачи появятся здесь.' },
+        calendar: { i: 'calendar', t: 'Календарь пуст', d: 'Задачи с конкретными датами появятся здесь.' },
+        someday: { i: 'cloud', t: 'Нет идей на будущее', d: 'Сохраняйте идеи и мечты для будущего рассмотрения.' },
+        reference: { i: 'book', t: 'Нет справочных материалов', d: 'Полезная информация для хранения.' },
+        done: { i: 'party', t: 'Пока ничего не сделано', d: 'Выполненные задачи появятся здесь.' },
+        trash: { i: 'trash', t: 'Корзина пуста', d: 'Удаленные элементы.' },
+        today: { i: 'star', t: 'На сегодня ничего нет', d: 'Свободный день! Или запланируйте задачи.' },
+        project: { i: 'folder', t: 'В проекте нет задач', d: 'Добавьте задачи в этот проект.' },
+        tag: { i: 'tag', t: 'Нет задач с этим тегом', d: 'Добавьте тег к задачам в детальной панели.' }
     };
-    const s = states[view] || { i: '📋', t: 'Пусто', d: '' };
+    const s = states[view] || { i: 'list', t: 'Пусто', d: '' };
     return `
         <div class="empty-state">
-            <div class="empty-icon">${s.i}</div>
+            <div class="empty-icon">${icon(s.i)}</div>
             <h3>${s.t}</h3>
             <p>${s.d}</p>
             ${s.a ? `<button class="empty-state-action" data-action="${s.f}">${s.a}</button>` : ''}
@@ -579,8 +579,8 @@ export function renderStatusBar() {
     const total = state.tasks.filter(t => t.list !== 'trash' && t.list !== 'done').length;
     const today = todayStr();
     const doneToday = state.tasks.filter(t => t.completedAt && t.completedAt.startsWith(today)).length;
-    $('#statusTotal').innerHTML = `📋 ${total} активных задач`;
-    $('#statusDone').innerHTML = `✅ ${doneToday} выполнено сегодня`;
+    $('#statusTotal').innerHTML = `${icon('list')} ${total} активных задач`;
+    $('#statusDone').innerHTML = `${icon('check')} ${doneToday} выполнено сегодня`;
 }
 
 // ============ SELECT TASK ============

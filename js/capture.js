@@ -1,7 +1,7 @@
 'use strict';
 
 // ============ CAPTURE / PROCESS / REVIEW / PROJECT & TAG MODALS / SHORTCUTS ============
-import { state, $, escapeHtml, todayStr, toast, generateId, PROJECT_COLORS, TAG_COLORS } from './core.js';
+import { state, $, escapeHtml, todayStr, toast, generateId, PROJECT_COLORS, TAG_COLORS, icon } from './core.js';
 import { save } from './storage.js';
 import { render, switchView } from './render.js';
 import { createTask, parseQuickInput, addActivity } from './model.js';
@@ -57,7 +57,7 @@ export function saveCaptureAndClose() {
     save();
     closeCapture();
     render();
-    toast('📥 Добавлено во входящие', 'success');
+    toast('Добавлено во входящие', 'success');
 }
 
 export function quickAddInList() {
@@ -90,7 +90,7 @@ export function renderProcessStep() {
     if (state.processingIndex >= state.processQueue.length) {
         $('#processBody').innerHTML = `
             <div class="process-step">
-                <div style="font-size:64px;margin-bottom:16px">🎉</div>
+                <div style="font-size:64px;margin-bottom:16px">${icon('party')}</div>
                 <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Готово!</h3>
                 <p style="color:var(--text-3);margin-bottom:20px">Все входящие обработаны. Ваша голова свободна для творческой работы.</p>
                 <button class="toolbar-btn primary" data-action="closeProcess" style="padding:10px 24px">Отлично!</button>
@@ -106,19 +106,19 @@ export function renderProcessStep() {
             ${task.notes ? `<div class="process-task-notes">${escapeHtml(task.notes)}</div>` : ''}
         </div>
         <div class="process-question">
-            <h3>🤔 Что это такое?</h3>
+            <h3>${icon('help')} Что это такое?</h3>
             <p>С этим можно что-то сделать?</p>
         </div>
         <div class="process-options">
             <button class="process-option" data-action="processActionable" data-arg="true">
-                <div class="process-option-icon">✅</div>
+                <div class="process-option-icon">${icon('check-circle')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Да, требует действия</div>
                     <div class="process-option-desc">Это требует конкретного физического действия</div>
                 </div>
             </button>
             <button class="process-option" data-action="processActionable" data-arg="false">
-                <div class="process-option-icon">❌</div>
+                <div class="process-option-icon">${icon('x')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Нет, действий не требует</div>
                     <div class="process-option-desc">Это информация, идея или мусор</div>
@@ -137,24 +137,24 @@ export function processActionable(yes) {
         $('#processBody').innerHTML = `
             <div class="process-progress">Элемент ${state.processingIndex + 1} из ${state.processQueue.length}</div>
             <div class="process-task-card"><div class="process-task-title">${escapeHtml(task.title)}</div></div>
-            <div class="process-question"><h3>📦 Куда отправить?</h3></div>
+            <div class="process-question"><h3>${icon('package')} Куда отправить?</h3></div>
             <div class="process-options">
                 <button class="process-option" data-action="processDispose" data-list="trash">
-                    <div class="process-option-icon">🗑</div>
+                    <div class="process-option-icon">${icon('trash')}</div>
                     <div class="process-option-content">
                         <div class="process-option-title">Мусор</div>
                         <div class="process-option-desc">Это не нужно</div>
                     </div>
                 </button>
                 <button class="process-option" data-action="processDispose" data-list="someday">
-                    <div class="process-option-icon">💭</div>
+                    <div class="process-option-icon">${icon('cloud')}</div>
                     <div class="process-option-content">
                         <div class="process-option-title">Когда-нибудь / Может быть</div>
                         <div class="process-option-desc">Интересная идея, но не сейчас</div>
                     </div>
                 </button>
                 <button class="process-option" data-action="processDispose" data-list="reference">
-                    <div class="process-option-icon">📚</div>
+                    <div class="process-option-icon">${icon('book')}</div>
                     <div class="process-option-content">
                         <div class="process-option-title">Справочные материалы</div>
                         <div class="process-option-desc">Полезная информация на будущее</div>
@@ -169,19 +169,19 @@ export function processActionable(yes) {
         <div class="process-progress">Элемент ${state.processingIndex + 1} из ${state.processQueue.length}</div>
         <div class="process-task-card"><div class="process-task-title">${escapeHtml(task.title)}</div></div>
         <div class="process-question">
-            <h3>⏱ Займет менее 2 минут?</h3>
+            <h3>${icon('clock')} Займет менее 2 минут?</h3>
             <p>Правило 2 минут: если можно сделать быстро — делайте сейчас!</p>
         </div>
         <div class="process-options">
             <button class="process-option" data-action="processDispose" data-list="done">
-                <div class="process-option-icon">🚀</div>
+                <div class="process-option-icon">${icon('rocket')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Да — делаю сейчас</div>
                     <div class="process-option-desc">Выполню и отмечу как сделано</div>
                 </div>
             </button>
             <button class="process-option" data-action="processChooseAction">
-                <div class="process-option-icon">⏰</div>
+                <div class="process-option-icon">${icon('clock')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Нет, больше 2 минут</div>
                     <div class="process-option-desc">Делегировать, запланировать или отложить</div>
@@ -196,24 +196,24 @@ export function processChooseAction() {
     $('#processBody').innerHTML = `
         <div class="process-progress">Элемент ${state.processingIndex + 1} из ${state.processQueue.length}</div>
         <div class="process-task-card"><div class="process-task-title">${escapeHtml(task.title)}</div></div>
-        <div class="process-question"><h3>🎯 Что с этим делать?</h3></div>
+        <div class="process-question"><h3>${icon('target')} Что с этим делать?</h3></div>
         <div class="process-options">
             <button class="process-option" data-action="processDispose" data-list="next">
-                <div class="process-option-icon">⚡</div>
+                <div class="process-option-icon">${icon('zap')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Выполню сам</div>
                     <div class="process-option-desc">→ Следующие действия</div>
                 </div>
             </button>
             <button class="process-option" data-action="processDispose" data-list="waiting">
-                <div class="process-option-icon">⏳</div>
+                <div class="process-option-icon">${icon('clock')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Перепоручить</div>
                     <div class="process-option-desc">→ Ожидания</div>
                 </div>
             </button>
             <button class="process-option" data-action="processDispose" data-list="calendar">
-                <div class="process-option-icon">📅</div>
+                <div class="process-option-icon">${icon('calendar')}</div>
                 <div class="process-option-content">
                     <div class="process-option-title">Запланировать</div>
                     <div class="process-option-desc">→ Календарь, конкретная дата</div>
@@ -230,7 +230,7 @@ export function processDispose(list) {
         task.completed = true;
         task.completedAt = new Date().toISOString();
         addActivity(task, 'completed (2-min rule)');
-        toast('🚀 Готово за 2 минуты!', 'success');
+        toast('Готово за 2 минуты!', 'success');
         state.processingIndex++;
         save();
         renderProcessStep();
@@ -240,7 +240,7 @@ export function processDispose(list) {
         $('#processBody').innerHTML = `
             <div class="process-progress">Элемент ${state.processingIndex + 1} из ${state.processQueue.length}</div>
             <div class="process-task-card"><div class="process-task-title">${escapeHtml(task.title)}</div></div>
-            <div class="process-question"><h3>👤 Кому поручили?</h3></div>
+            <div class="process-question"><h3>${icon('user')} Кому поручили?</h3></div>
             <input type="text" id="processWaitingInput" class="capture-input" placeholder="Имя человека" autofocus data-action="finishProcess" data-on="enter">
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
                 <button class="toolbar-btn primary" data-action="finishProcess">Продолжить</button>
@@ -253,7 +253,7 @@ export function processDispose(list) {
         $('#processBody').innerHTML = `
             <div class="process-progress">Элемент ${state.processingIndex + 1} из ${state.processQueue.length}</div>
             <div class="process-task-card"><div class="process-task-title">${escapeHtml(task.title)}</div></div>
-            <div class="process-question"><h3>📅 На какую дату?</h3></div>
+            <div class="process-question"><h3>${icon('calendar')} На какую дату?</h3></div>
             <input type="date" id="processDateInput" class="capture-input" value="${todayStr()}">
             <input type="time" id="processTimeInput" class="capture-input" placeholder="Время (необязательно)">
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
@@ -289,14 +289,14 @@ export function openReview() {
     const progress = state.reviewProgress[week];
 
     const items = [
-        { id: 'inbox', title: '📥 Очистить входящие', desc: 'Обработать все элементы во входящих до нуля' },
-        { id: 'actions', title: '⚡ Просмотреть списки действий', desc: 'Проверить следующие действия, контексты, проекты' },
-        { id: 'calendar', title: '📅 Просмотреть календарь', desc: 'Прошедшие и предстоящие 2 недели' },
-        { id: 'waiting', title: '⏳ Проверить ожидания', desc: 'Что еще ждем? Нужно ли напомнить?' },
-        { id: 'projects', title: '📁 Просмотреть проекты', desc: 'Каждый проект имеет следующее действие?' },
-        { id: 'someday', title: '💭 Просмотреть "Когда-нибудь"', desc: 'Что-то стало актуальным? Активировать?' },
-        { id: 'goals', title: '🎯 Цели и приоритеты', desc: 'Какие у меня цели на эту неделю?' },
-        { id: 'creative', title: '💡 Креативное мышление', desc: 'Любые новые идеи, мысли, направления?' }
+        { id: 'inbox', title: `${icon('inbox')} Очистить входящие`, desc: 'Обработать все элементы во входящих до нуля' },
+        { id: 'actions', title: `${icon('zap')} Просмотреть списки действий`, desc: 'Проверить следующие действия, контексты, проекты' },
+        { id: 'calendar', title: `${icon('calendar')} Просмотреть календарь`, desc: 'Прошедшие и предстоящие 2 недели' },
+        { id: 'waiting', title: `${icon('clock')} Проверить ожидания`, desc: 'Что еще ждем? Нужно ли напомнить?' },
+        { id: 'projects', title: `${icon('folder')} Просмотреть проекты`, desc: 'Каждый проект имеет следующее действие?' },
+        { id: 'someday', title: `${icon('cloud')} Просмотреть "Когда-нибудь"`, desc: 'Что-то стало актуальным? Активировать?' },
+        { id: 'goals', title: `${icon('target')} Цели и приоритеты`, desc: 'Какие у меня цели на эту неделю?' },
+        { id: 'creative', title: `${icon('lightbulb')} Креативное мышление`, desc: 'Любые новые идеи, мысли, направления?' }
     ];
 
     let html = `<p style="font-size:13px;color:var(--text-3);margin-bottom:16px">Еженедельный обзор — основа методологии GTD. Уделите ему 30-60 минут.</p><ul class="review-checklist">`;
@@ -316,7 +316,7 @@ export function openReview() {
 
     const completedCount = Object.values(progress).filter(v => v).length;
     if (completedCount === items.length) {
-        html += `<div style="margin-top:16px;padding:14px;background:rgba(34,197,94,0.1);border:1px solid var(--success);border-radius:8px;text-align:center;color:var(--success);font-weight:600">🎉 Еженедельный обзор завершен!</div>`;
+        html += `<div style="margin-top:16px;padding:14px;background:rgba(34,197,94,0.1);border:1px solid var(--success);border-radius:8px;text-align:center;color:var(--success);font-weight:600">${icon('party')} Еженедельный обзор завершен!</div>`;
     }
 
     $('#reviewBody').innerHTML = html;
@@ -347,7 +347,7 @@ export function closeReview() {
 // ============ PROJECTS MODAL ============
 export function openProjectModal() {
     state.editingProjectId = null;
-    $('#projectModalTitle').textContent = '📁 Новый проект';
+    $('#projectModalTitle').innerHTML = `${icon('folder')} Новый проект`;
     $('#projectNameInput').value = '';
     $('#projectDescInput').value = '';
     $('#projectDeadline').value = '';
@@ -371,7 +371,7 @@ export function editProject(id) {
     const p = state.projects.find(p => p.id === id);
     if (!p) return;
     state.editingProjectId = id;
-    $('#projectModalTitle').textContent = '✏️ Редактирование проекта';
+    $('#projectModalTitle').innerHTML = `${icon('edit')} Редактирование проекта`;
     $('#projectNameInput').value = p.title;
     $('#projectDescInput').value = p.description || '';
     $('#projectDeadline').value = p.deadline || '';

@@ -133,7 +133,7 @@ export function toggleComplete(id, e) {
             task.originalList = task.list;
             task.list = 'done';
         }
-        toast('🎉 Задача выполнена!', 'success');
+        toast('Задача выполнена!', 'success');
     } else {
         task.completedAt = null;
         addActivity(task, 'uncompleted');

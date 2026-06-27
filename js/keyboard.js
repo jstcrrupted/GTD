@@ -1,7 +1,7 @@
 'use strict';
 
 // ============ KEYBOARD / CONTEXT MENU / SIDEBAR ============
-import { state, $, $$ } from './core.js';
+import { state, $, $$, icon } from './core.js';
 import { openDetail, closeDetail } from './detail.js';
 import { toggleComplete, trashTask } from './model.js';
 import { openCapture, startProcess, openReview, openShortcuts, saveCaptureAndClose, quickAddInList } from './capture.js';
@@ -16,27 +16,27 @@ export function showTaskContext(id, e) {
     state.selectedTaskId = id;
     menu.innerHTML = `
         <div class="context-menu-item" data-action="ctxOpenDetail" data-id="${id}">
-            <span class="context-menu-icon">↗</span>Открыть детали<span class="context-menu-shortcut">Enter</span>
+            <span class="context-menu-icon">${icon('external')}</span>Открыть детали<span class="context-menu-shortcut">Enter</span>
         </div>
         <div class="context-menu-item" data-action="ctxToggleComplete" data-id="${id}">
-            <span class="context-menu-icon">✓</span>${task.completed ? 'Вернуть' : 'Выполнить'}<span class="context-menu-shortcut">Space</span>
+            <span class="context-menu-icon">${icon('check')}</span>${task.completed ? 'Вернуть' : 'Выполнить'}<span class="context-menu-shortcut">Space</span>
         </div>
         <div class="context-menu-item" data-action="duplicateFromContext" data-id="${id}">
-            <span class="context-menu-icon">📋</span>Дублировать
+            <span class="context-menu-icon">${icon('copy')}</span>Дублировать
         </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item" data-action="ctxMoveNext" data-id="${id}">
-            <span class="context-menu-icon">⚡</span>В Следующие
+            <span class="context-menu-icon">${icon('zap')}</span>В Следующие
         </div>
         <div class="context-menu-item" data-action="ctxMoveSomeday" data-id="${id}">
-            <span class="context-menu-icon">💭</span>В Когда-нибудь
+            <span class="context-menu-icon">${icon('cloud')}</span>В Когда-нибудь
         </div>
         <div class="context-menu-item" data-action="ctxMoveReference" data-id="${id}">
-            <span class="context-menu-icon">📚</span>В Справочные
+            <span class="context-menu-icon">${icon('book')}</span>В Справочные
         </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item danger" data-action="ctxTrash" data-id="${id}">
-            <span class="context-menu-icon">🗑</span>Удалить<span class="context-menu-shortcut">Del</span>
+            <span class="context-menu-icon">${icon('trash')}</span>Удалить<span class="context-menu-shortcut">Del</span>
         </div>
     `;
     menu.style.left = e.clientX + 'px';
