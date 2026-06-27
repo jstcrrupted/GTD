@@ -22,6 +22,14 @@ export function handleGlobalSearch(e) {
     renderContent();
 }
 
+// Exit search mode and return to the currently active view.
+export function clearSearch() {
+    state.searchQuery = '';
+    const input = $('#globalSearch');
+    if (input) input.value = '';
+    renderContent();
+}
+
 // ============ EXPORT/IMPORT ============
 export function exportData() {
     const data = {

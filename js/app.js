@@ -39,7 +39,7 @@ import {
 
 import {
     openSettings, closeSettings, exportData, importData, handleFileImport,
-    clearAllData, loadDemoData, seedDemoData, handleGlobalSearch, promptInstallPWA
+    clearAllData, loadDemoData, seedDemoData, handleGlobalSearch, clearSearch, promptInstallPWA
 } from './settings.js';
 
 import { showTaskContext, hideContextMenu, toggleSidebar, closeSidebar } from './keyboard.js';
@@ -125,7 +125,7 @@ registerActions({
     // Settings / Backups / Data
     openSettings: () => openSettings(),
     closeSettings: () => closeSettings(),
-    openShortcuts: () => openShortcuts(),
+    openShortcutsFromSettings: () => (closeSettings(), openShortcuts()),
     closeShortcuts: () => closeShortcuts(),
     createBackupNow: () => createBackupNow(),
     restoreLatestBackup: () => restoreLatestBackup(),
@@ -141,6 +141,7 @@ registerActions({
     clearAllData: () => clearAllData(),
     loadDemoData: () => loadDemoData(),
     handleGlobalSearch: (c) => handleGlobalSearch(c.event),
+    clearSearch: () => clearSearch(),
     promptInstallPWA: () => promptInstallPWA(),
 });
 

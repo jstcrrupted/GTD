@@ -414,6 +414,7 @@ export function renderSearchResults(c) {
 
     let html = `
         <div class="task-section-header" style="cursor:default">
+            <button class="toolbar-btn" data-action="clearSearch" title="Вернуться к текущему виду">← Назад</button>
             <span class="task-section-title">🔍 Поиск: «${escapeHtml(state.searchQuery.trim())}»</span>
             <span class="task-section-count">${sorted.length}</span>
             <span class="task-section-divider"></span>
