@@ -1,5 +1,5 @@
 /* GTD Pro Service Worker (offline shell) */
-const CACHE_NAME = 'gtd-pro-cache-v5';
+const CACHE_NAME = 'gtd-pro-cache-v6';
 const ASSETS = [
   './',
   './index.html',
