@@ -82,11 +82,22 @@ export function setSyncStatus(text, ok=true) {
     if (dot) dot.style.background = ok ? 'var(--success)' : 'var(--warning)';
 }
 
+// Renders a sprite icon. `name` is the symbol id WITHOUT the 'i-' prefix.
+export function icon(name, cls = '') {
+    return `<svg class="icon ${cls}" aria-hidden="true"><use href="assets/icons.svg#i-${name}"></use></svg>`;
+}
+
+// Colored priority/energy dot. level: 'high' | 'medium' | 'low'
+export function levelDot(level) {
+    const color = level === 'high' ? '#e24b4a' : level === 'medium' ? '#ef9f27' : '#639922';
+    return `<svg class="level-dot" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="${color}"/></svg>`;
+}
+
 export function toast(msg, type = 'info') {
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-    t.innerHTML = `<span>${icon}</span><span>${escapeHtml(msg)}</span>`;
+    const sym = type === 'success' ? 'check-circle' : type === 'error' ? 'alert' : 'info';
+    t.innerHTML = `<span>${icon(sym)}</span><span>${escapeHtml(msg)}</span>`;
     $('#toastContainer').appendChild(t);
     setTimeout(() => t.remove(), 3000);
 }

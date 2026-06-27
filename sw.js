@@ -1,10 +1,11 @@
 /* GTD Pro Service Worker (offline shell) */
-const CACHE_NAME = 'gtd-pro-cache-v4';
+const CACHE_NAME = 'gtd-pro-cache-v5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './css/styles.css',
+  './assets/icons.svg',
   './js/core.js',
   './js/actions.js',
   './js/storage.js',

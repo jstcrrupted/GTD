@@ -1,7 +1,7 @@
 'use strict';
 
 // ============ VIEWS: dashboard, projects, tags, calendar, kanban ============
-import { state, $, $$, escapeHtml, todayStr, formatDate, toast } from './core.js';
+import { state, $, $$, escapeHtml, todayStr, formatDate, toast, icon } from './core.js';
 import { renderTaskItem, sortTasks, render } from './render.js';
 import { save } from './storage.js';
 import { addActivity } from './model.js';
@@ -37,15 +37,15 @@ export function renderDashboard(c) {
                 <div class="stat-card" data-action="switchView" data-view="inbox" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Входящие</span>
-                        <div class="stat-card-icon" style="background:rgba(124,92,255,0.12);color:var(--inbox)">📥</div>
+                        <div class="stat-card-icon" style="background:rgba(124,92,255,0.12);color:var(--inbox)">${icon('inbox')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--inbox)">${inboxCount}</div>
-                    <div class="stat-card-change">${inboxCount === 0 ? '✓ Голова свободна' : 'Требует обработки'}</div>
+                    <div class="stat-card-change">${inboxCount === 0 ? `${icon('check')} Голова свободна` : 'Требует обработки'}</div>
                 </div>
                 <div class="stat-card" data-action="switchView" data-view="today" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">На сегодня</span>
-                        <div class="stat-card-icon" style="background:rgba(245,158,11,0.12);color:var(--warning)">⭐</div>
+                        <div class="stat-card-icon" style="background:rgba(245,158,11,0.12);color:var(--warning)">${icon('star')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--warning)">${todayCount}</div>
                     <div class="stat-card-change">${todayCount === 0 ? 'Свободный день' : 'Задач на сегодня'}</div>
@@ -53,7 +53,7 @@ export function renderDashboard(c) {
                 <div class="stat-card" data-action="switchView" data-view="next" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">К выполнению</span>
-                        <div class="stat-card-icon" style="background:rgba(59,130,246,0.12);color:var(--next)">⚡</div>
+                        <div class="stat-card-icon" style="background:rgba(59,130,246,0.12);color:var(--next)">${icon('zap')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--next)">${nextCount}</div>
                     <div class="stat-card-change">Следующих действий</div>
@@ -61,10 +61,10 @@ export function renderDashboard(c) {
                 <div class="stat-card" data-action="switchView" data-view="overdue" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Просрочено</span>
-                        <div class="stat-card-icon" style="background:rgba(239,68,68,0.12);color:var(--danger)">🔥</div>
+                        <div class="stat-card-icon" style="background:rgba(239,68,68,0.12);color:var(--danger)">${icon('flame')}</div>
                     </div>
                     <div class="stat-card-value" style="color:${overdue > 0 ? 'var(--danger)' : 'var(--text)'}">${overdue}</div>
-                    <div class="stat-card-change ${overdue > 0 ? 'negative' : 'positive'}">${overdue > 0 ? 'Требует внимания' : '✓ Все по плану'}</div>
+                    <div class="stat-card-change ${overdue > 0 ? 'negative' : 'positive'}">${overdue > 0 ? 'Требует внимания' : `${icon('check')} Все по плану`}</div>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ export function renderDashboard(c) {
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Сделано сегодня</span>
-                        <div class="stat-card-icon" style="background:rgba(34,197,94,0.12);color:var(--done)">✅</div>
+                        <div class="stat-card-icon" style="background:rgba(34,197,94,0.12);color:var(--done)">${icon('check-circle')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--done)">${doneToday}</div>
                     <div class="stat-card-change positive">${doneToday > 0 ? 'Отличная работа!' : 'Время действовать'}</div>
@@ -80,7 +80,7 @@ export function renderDashboard(c) {
                 <div class="stat-card" data-action="switchView" data-view="projects" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Проекты</span>
-                        <div class="stat-card-icon" style="background:rgba(236,72,153,0.12);color:var(--project)">📁</div>
+                        <div class="stat-card-icon" style="background:rgba(236,72,153,0.12);color:var(--project)">${icon('folder')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--project)">${projectsActive}</div>
                     <div class="stat-card-change">Активных проектов</div>
@@ -88,7 +88,7 @@ export function renderDashboard(c) {
                 <div class="stat-card" data-action="switchView" data-view="waiting" style="cursor:pointer">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Ожидания</span>
-                        <div class="stat-card-icon" style="background:rgba(245,158,11,0.12);color:var(--waiting)">⏳</div>
+                        <div class="stat-card-icon" style="background:rgba(245,158,11,0.12);color:var(--waiting)">${icon('clock')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--waiting)">${waitingCount}</div>
                     <div class="stat-card-change">Делегированных</div>
@@ -96,7 +96,7 @@ export function renderDashboard(c) {
                 <div class="stat-card">
                     <div class="stat-card-header">
                         <span class="stat-card-label">Всего активных</span>
-                        <div class="stat-card-icon" style="background:rgba(6,182,212,0.12);color:var(--reference)">📋</div>
+                        <div class="stat-card-icon" style="background:rgba(6,182,212,0.12);color:var(--reference)">${icon('list')}</div>
                     </div>
                     <div class="stat-card-value" style="color:var(--reference)">${totalActive}</div>
                     <div class="stat-card-change">В работе</div>
@@ -104,7 +104,7 @@ export function renderDashboard(c) {
             </div>
 
             <div class="chart-card">
-                <h3>📈 Активность за 7 дней</h3>
+                <h3>${icon('chart')} Активность за 7 дней</h3>
                 <div class="chart-bars">
                     ${days.map(d => `
                         <div class="chart-bar" style="height:${(d.count / maxCount) * 100}%;opacity:${d.isToday ? 1 : 0.7}" title="${d.ds}: ${d.count}">
@@ -123,7 +123,7 @@ export function renderDashboard(c) {
         html += `
             <div style="margin-top:24px">
                 <div class="task-section-header" style="cursor:default">
-                    <span class="task-section-title">⭐ На сегодня</span>
+                    <span class="task-section-title">${icon('star')} На сегодня</span>
                     <span class="task-section-count">${todayTasks.length}</span>
                     <span class="task-section-divider"></span>
                 </div>
@@ -143,7 +143,7 @@ export function renderOverdue(c) {
     if (tasks.length === 0) {
         c.innerHTML = `
             <div class="empty-state">
-                <div class="empty-icon">🎉</div>
+                <div class="empty-icon">${icon('party')}</div>
                 <h3>Нет просроченных задач!</h3>
                 <p>Все идет по плану. Так держать!</p>
             </div>
@@ -161,7 +161,7 @@ export function renderProjects(c) {
     if (state.projects.length === 0) {
         c.innerHTML = `
             <div class="empty-state">
-                <div class="empty-icon">📁</div>
+                <div class="empty-icon">${icon('folder')}</div>
                 <h3>Нет проектов</h3>
                 <p>Проект — это результат, требующий нескольких действий. Создайте первый проект!</p>
                 <button class="empty-state-action" data-action="openProjectModal">＋ Создать проект</button>
@@ -188,18 +188,18 @@ export function renderProjects(c) {
                         </div>
                     </div>
                     <div style="display:flex;gap:4px">
-                        <button class="task-action-btn" data-action="editProject" data-id="${p.id}" title="Изменить">✏️</button>
-                        <button class="task-action-btn delete" data-action="deleteProject" data-id="${p.id}" title="Удалить">🗑</button>
+                        <button class="task-action-btn" data-action="editProject" data-id="${p.id}" title="Изменить" aria-label="Изменить">${icon('edit')}</button>
+                        <button class="task-action-btn delete" data-action="deleteProject" data-id="${p.id}" title="Удалить" aria-label="Удалить">${icon('trash')}</button>
                     </div>
                 </div>
                 <div class="project-progress-large">
                     <div class="project-progress-large-fill" style="width:${progress}%;background:${p.color}"></div>
                 </div>
                 <div class="project-stats">
-                    <div class="project-stat-item">📋 ${projectTasks.length} задач</div>
-                    <div class="project-stat-item">✅ ${done} готово</div>
-                    <div class="project-stat-item">⚡ ${active} активных</div>
-                    ${p.deadline ? `<div class="project-stat-item" style="color:${isOverdue ? 'var(--danger)' : 'inherit'}">📅 ${formatDate(p.deadline)}</div>` : ''}
+                    <div class="project-stat-item">${icon('list')} ${projectTasks.length} задач</div>
+                    <div class="project-stat-item">${icon('check')} ${done} готово</div>
+                    <div class="project-stat-item">${icon('zap')} ${active} активных</div>
+                    ${p.deadline ? `<div class="project-stat-item" style="color:${isOverdue ? 'var(--danger)' : 'inherit'}">${icon('calendar')} ${formatDate(p.deadline)}</div>` : ''}
                 </div>
             </div>
         `;
@@ -213,7 +213,7 @@ export function renderTags(c) {
     if (state.tags.length === 0) {
         c.innerHTML = `
             <div class="empty-state">
-                <div class="empty-icon">🏷</div>
+                <div class="empty-icon">${icon('tag')}</div>
                 <h3>Нет тегов</h3>
                 <p>Теги помогают организовать задачи по любым категориям.</p>
                 <button class="empty-state-action" data-action="openTagModal">＋ Создать тег</button>
@@ -229,7 +229,7 @@ export function renderTags(c) {
                 <div class="tag-card-color" style="background:${tag.color}"></div>
                 <div class="tag-card-name">#${escapeHtml(tag.name)}</div>
                 <div class="tag-card-count">${count}</div>
-                <button class="task-action-btn delete" data-action="deleteTag" data-id="${tag.id}" style="opacity:1">🗑</button>
+                <button class="task-action-btn delete" data-action="deleteTag" data-id="${tag.id}" style="opacity:1" aria-label="Удалить тег">${icon('trash')}</button>
             </div>
         `;
     });
@@ -298,7 +298,7 @@ export function renderCalendar(c) {
     if (todayTasks.length > 0) {
         html += `
             <div>
-                <h3 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--accent)">📅 Сегодня · ${formatDate(today)}</h3>
+                <h3 style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--accent)">${icon('calendar')} Сегодня · ${formatDate(today)}</h3>
                 <div class="task-list">${todayTasks.map(t => renderTaskItem(t)).join('')}</div>
             </div>
         `;

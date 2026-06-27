@@ -19,17 +19,18 @@
 <div class="app">
     <!-- TITLE BAR -->
     <div class="titlebar">
-        <button class="titlebar-btn menu-toggle" data-action="toggleSidebar">☰</button>
+        <button class="titlebar-btn menu-toggle" data-action="toggleSidebar" aria-label="Меню"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-menu"></use></svg></button>
         <div class="titlebar-logo">
-            <div class="titlebar-logo-icon">⚡</div>
+            <div class="titlebar-logo-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-zap"></use></svg></div>
             <span>GTD Pro</span>
         </div>
         <div class="titlebar-search">
+            <svg class="icon search-icon" aria-hidden="true"><use href="assets/icons.svg#i-search"></use></svg>
             <input type="text" id="globalSearch" placeholder="Поиск по всем задачам..." data-action="handleGlobalSearch" data-on="input">
         </div>
         <div class="titlebar-actions">
-            <button class="titlebar-btn" data-action="openReview" title="Еженедельный обзор">🔄</button>
-            <button class="titlebar-btn" data-action="openSettings" title="Настройки">⚙️</button>
+            <button class="titlebar-btn" data-action="openReview" title="Еженедельный обзор" aria-label="Еженедельный обзор"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-refresh"></use></svg></button>
+            <button class="titlebar-btn" data-action="openSettings" title="Настройки" aria-label="Настройки"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-settings"></use></svg></button>
         </div>
     </div>
 
@@ -47,8 +48,8 @@
         </nav>
 
         <div class="sidebar-footer">
-            <button class="footer-btn" data-action="exportData" title="Экспорт">📤 Экспорт</button>
-            <button class="footer-btn" data-action="importData" title="Импорт">📥 Импорт</button>
+            <button class="footer-btn" data-action="exportData" title="Экспорт"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-upload"></use></svg> Экспорт</button>
+            <button class="footer-btn" data-action="importData" title="Импорт"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-download"></use></svg> Импорт</button>
         </div>
     </aside>
 
@@ -58,7 +59,7 @@
             <div class="view-header-info">
                 <div class="view-breadcrumb" id="viewBreadcrumb">GTD</div>
                 <div class="view-title">
-                    <span class="view-title-icon" id="viewIcon">📥</span>
+                    <span class="view-title-icon" id="viewIcon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-inbox"></use></svg></span>
                     <h1 id="viewTitle">Входящие</h1>
                 </div>
                 <div class="view-meta" id="viewMeta"></div>
@@ -82,11 +83,11 @@
             <span id="statusSync">Сохранено локально</span>
         </div>
         <div class="status-divider"></div>
-        <div class="status-item" id="statusTotal">📋 0 задач</div>
+        <div class="status-item" id="statusTotal"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-list"></use></svg> 0 задач</div>
         <div class="status-divider"></div>
-        <div class="status-item" id="statusDone">✅ 0 выполнено сегодня</div>
+        <div class="status-item" id="statusDone"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-check"></use></svg> 0 выполнено сегодня</div>
         <div class="status-spacer"></div>
-        <div class="status-item">⚡ GTD Pro v2.0</div>
+        <div class="status-item"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-zap"></use></svg> GTD Pro v2.0</div>
     </div>
 </div>
 
@@ -95,9 +96,9 @@
     <div class="detail-header">
         <input type="text" class="detail-title-input" id="detailTitle" placeholder="Название задачи..." data-action="updateDetailTitle" data-on="input">
         <div class="detail-header-actions">
-            <button class="toolbar-icon-btn" data-action="duplicateTask" title="Дублировать">📋</button>
-            <button class="toolbar-icon-btn" data-action="deleteCurrentTask" title="Удалить">🗑</button>
-            <button class="toolbar-icon-btn" data-action="closeDetail" title="Закрыть">✕</button>
+            <button class="toolbar-icon-btn" data-action="duplicateTask" title="Дублировать" aria-label="Дублировать"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-copy"></use></svg></button>
+            <button class="toolbar-icon-btn" data-action="deleteCurrentTask" title="Удалить" aria-label="Удалить"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-trash"></use></svg></button>
+            <button class="toolbar-icon-btn" data-action="closeDetail" title="Закрыть" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
     </div>
     <div class="detail-body" id="detailBody">
@@ -109,15 +110,15 @@
 <div class="modal-overlay capture-modal" id="captureModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>📥 Быстрый захват</h3>
-            <button class="modal-close" data-action="closeCapture">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-inbox"></use></svg> Быстрый захват</h3>
+            <button class="modal-close" data-action="closeCapture" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body">
             <input type="text" class="capture-input" id="captureInput" placeholder="Что у вас на уме?" autocomplete="off">
             <textarea class="capture-textarea" id="captureNotes" placeholder="Заметки (необязательно)..."></textarea>
             <div class="capture-suggestions" id="captureSuggestions"></div>
             <div class="capture-hint">
-                💡 Используйте: <code>!1</code> <code>!2</code> <code>!3</code> приоритет · <code>@контекст</code> · <code>#тег</code> · <code>~завтра</code> или <code>~2024-12-25</code>
+                <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-lightbulb"></use></svg> Используйте: <code>!1</code> <code>!2</code> <code>!3</code> приоритет · <code>@контекст</code> · <code>#тег</code> · <code>~завтра</code> или <code>~2024-12-25</code>
             </div>
         </div>
         <div class="modal-footer">
@@ -131,8 +132,8 @@
 <div class="modal-overlay" id="processModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>🔄 Обработка входящих</h3>
-            <button class="modal-close" data-action="closeProcess">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-refresh"></use></svg> Обработка входящих</h3>
+            <button class="modal-close" data-action="closeProcess" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body" id="processBody"></div>
     </div>
@@ -142,8 +143,8 @@
 <div class="modal-overlay" id="projectModal">
     <div class="modal">
         <div class="modal-header">
-            <h3 id="projectModalTitle">📁 Новый проект</h3>
-            <button class="modal-close" data-action="closeProjectModal">✕</button>
+            <h3 id="projectModalTitle"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-folder"></use></svg> Новый проект</h3>
+            <button class="modal-close" data-action="closeProjectModal" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body">
             <div class="detail-field">
@@ -176,8 +177,8 @@
 <div class="modal-overlay" id="tagModal">
     <div class="modal" style="max-width:380px">
         <div class="modal-header">
-            <h3>🏷 Новый тег</h3>
-            <button class="modal-close" data-action="closeTagModal">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-tag"></use></svg> Новый тег</h3>
+            <button class="modal-close" data-action="closeTagModal" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body">
             <div class="detail-field">
@@ -200,8 +201,8 @@
 <div class="modal-overlay" id="reviewModal">
     <div class="modal" style="max-width:640px">
         <div class="modal-header">
-            <h3>🔄 Еженедельный обзор</h3>
-            <button class="modal-close" data-action="closeReview">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-refresh"></use></svg> Еженедельный обзор</h3>
+            <button class="modal-close" data-action="closeReview" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body" id="reviewBody"></div>
         <div class="modal-footer">
@@ -214,8 +215,8 @@
 <div class="modal-overlay shortcuts-modal" id="shortcutsModal">
     <div class="modal" style="max-width:520px">
         <div class="modal-header">
-            <h3>⌨️ Горячие клавиши</h3>
-            <button class="modal-close" data-action="closeShortcuts">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-keyboard"></use></svg> Горячие клавиши</h3>
+            <button class="modal-close" data-action="closeShortcuts" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body">
             <div class="shortcut-group">
@@ -249,35 +250,35 @@
 <div class="modal-overlay" id="settingsModal">
     <div class="modal" style="max-width:480px">
         <div class="modal-header">
-            <h3>⚙️ Настройки</h3>
-            <button class="modal-close" data-action="closeSettings">✕</button>
+            <h3><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-settings"></use></svg> Настройки</h3>
+            <button class="modal-close" data-action="closeSettings" aria-label="Закрыть"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg></button>
         </div>
         <div class="modal-body">
             <div class="detail-field">
                 <div class="detail-field-label">Справка</div>
                 <div style="display:flex;flex-direction:column;gap:6px">
-                    <button class="toolbar-btn" data-action="openShortcutsFromSettings">⌨️ Горячие клавиши</button>
+                    <button class="toolbar-btn" data-action="openShortcutsFromSettings"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-keyboard"></use></svg> Горячие клавиши</button>
                 </div>
             </div>
 
             <div class="detail-field">
                 <div class="detail-field-label">Управление данными</div>
                 <div style="display:flex;flex-direction:column;gap:6px">
-                    <button class="toolbar-btn" data-action="exportData">📤 Экспортировать в JSON</button>
-                    <button class="toolbar-btn" data-action="importData">📥 Импортировать из JSON</button>
-                    <button class="toolbar-btn" data-action="loadDemoData">🎯 Загрузить демо-данные</button>
-                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearAllData">🗑 Очистить все данные</button>
+                    <button class="toolbar-btn" data-action="exportData"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-upload"></use></svg> Экспортировать в JSON</button>
+                    <button class="toolbar-btn" data-action="importData"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-download"></use></svg> Импортировать из JSON</button>
+                    <button class="toolbar-btn" data-action="loadDemoData"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-target"></use></svg> Загрузить демо-данные</button>
+                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearAllData"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-trash"></use></svg> Очистить все данные</button>
                 </div>
             </div>
             
             <div class="detail-field">
                 <div class="detail-field-label">Резервные копии и восстановление</div>
                 <div style="display:flex;flex-direction:column;gap:6px">
-                    <button class="toolbar-btn" data-action="createBackupNow">🧩 Создать бэкап сейчас</button>
-                    <button class="toolbar-btn" data-action="restoreLatestBackup">⏪ Восстановить последний бэкап</button>
-                    <button class="toolbar-btn" data-action="exportFullBackup">📦 Экспорт приложения (полный бэкап)</button>
-                    <button class="toolbar-btn" data-action="importFullBackup">📥 Импорт полного бэкапа</button>
-                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearBackups">🧹 Очистить историю бэкапов</button>
+                    <button class="toolbar-btn" data-action="createBackupNow"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-puzzle"></use></svg> Создать бэкап сейчас</button>
+                    <button class="toolbar-btn" data-action="restoreLatestBackup"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-rewind"></use></svg> Восстановить последний бэкап</button>
+                    <button class="toolbar-btn" data-action="exportFullBackup"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-package"></use></svg> Экспорт приложения (полный бэкап)</button>
+                    <button class="toolbar-btn" data-action="importFullBackup"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-download"></use></svg> Импорт полного бэкапа</button>
+                    <button class="toolbar-btn" style="color:var(--danger)" data-action="clearBackups"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-broom"></use></svg> Очистить историю бэкапов</button>
                 </div>
                 <div class="install-hint">Автобэкапы создаются автоматически каждые 2 минуты и перед рискованными действиями (импорт/очистка).</div>
                 <div id="backupList" class="backup-list"></div>
@@ -286,7 +287,7 @@
             <div class="detail-field">
                 <div class="detail-field-label">Установка (PWA)</div>
                 <div style="display:flex;flex-direction:column;gap:6px">
-                    <button class="toolbar-btn" data-action="promptInstallPWA">⬇️ Установить приложение</button>
+                    <button class="toolbar-btn" data-action="promptInstallPWA"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-download"></use></svg> Установить приложение</button>
                 </div>
                 <div class="install-hint" id="installHint">Если кнопка неактивна — откройте сайт по HTTPS и добавьте на главный экран через меню браузера.</div>
             </div>
