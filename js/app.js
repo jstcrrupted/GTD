@@ -149,11 +149,33 @@ registerActions({
 initDelegation();
 initDnD();
 
-// ============ SERVICE WORKER (PWA offline) ============
+// ============ SERVICE WORKER (PWA offline, self-updating) ============
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
         try {
-            await navigator.serviceWorker.register('./sw.js');
+            const reg = await navigator.serviceWorker.register('./sw.js');
+
+            // Periodically check for an updated SW (e.g. hourly).
+            setInterval(() => reg.update(), 60 * 60 * 1000);
+
+            // When a new SW takes control, reload once to get fresh assets.
+            let reloading = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (reloading) return;
+                reloading = true;
+                window.location.reload();
+            });
+
+            // If an updated SW is waiting, activate it.
+            reg.addEventListener('updatefound', () => {
+                const sw = reg.installing;
+                if (!sw) return;
+                sw.addEventListener('statechange', () => {
+                    if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+                        sw.postMessage('SKIP_WAITING');
+                    }
+                });
+            });
         } catch (e) {
             console.warn('SW register failed', e);
         }
