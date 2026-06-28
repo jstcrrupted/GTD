@@ -34,7 +34,14 @@ export const $ = (sel) => document.querySelector(sel);
 export const $$ = (sel) => document.querySelectorAll(sel);
 
 export function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2, 7);
+    return (crypto.randomUUID) ? crypto.randomUUID()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8); return v.toString(16);
+        });
+}
+
+export function isUuid(id) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}/i.test(id || '');
 }
 
 export function escapeHtml(text) {

@@ -397,10 +397,11 @@ export function saveProject() {
     };
     if (state.editingProjectId) {
         const p = state.projects.find(p => p.id === state.editingProjectId);
-        if (p) Object.assign(p, data);
+        if (p) { Object.assign(p, data); p.updatedAt = new Date().toISOString(); }
         toast('Проект обновлен', 'success');
     } else {
-        state.projects.push({ id: generateId(), ...data, createdAt: new Date().toISOString() });
+        const now = new Date().toISOString();
+        state.projects.push({ id: generateId(), ...data, createdAt: now, updatedAt: now });
         toast('Проект создан', 'success');
     }
     save();
@@ -412,7 +413,7 @@ export function deleteProject(id) {
     if (!confirm('Удалить проект? Задачи останутся, но потеряют связь с проектом.')) return;
     state.projects = state.projects.filter(p => p.id !== id);
     state.tasks.forEach(t => {
-        if (t.projectId === id) t.projectId = null;
+        if (t.projectId === id) { t.projectId = null; t.updatedAt = new Date().toISOString(); }
     });
     save();
     if (state.currentProjectId === id) switchView('projects');
@@ -450,10 +451,13 @@ export function saveTag() {
         toast('Тег уже существует', 'error');
         return;
     }
+    const now = new Date().toISOString();
     state.tags.push({
         id: generateId(),
         name,
-        color: $('#tagColorPicker').dataset.selected
+        color: $('#tagColorPicker').dataset.selected,
+        createdAt: now,
+        updatedAt: now
     });
     save();
     closeTagModal();
@@ -468,7 +472,7 @@ export function deleteTag(id, e) {
     if (!confirm(`Удалить тег #${tag.name}?`)) return;
     state.tags = state.tags.filter(t => t.id !== id);
     state.tasks.forEach(t => {
-        if (t.tags) t.tags = t.tags.filter(n => n !== tag.name);
+        if (t.tags && t.tags.includes(tag.name)) { t.tags = t.tags.filter(n => n !== tag.name); t.updatedAt = new Date().toISOString(); }
     });
     save();
     render();

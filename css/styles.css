@@ -2426,3 +2426,79 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
 .small-btn.danger { color: var(--danger); border-color: rgba(239,68,68,0.35); }
 .small-btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
 .small-btn.primary:hover { background: var(--accent-hover); }
+
+/* ============ AUTH OVERLAY ============ */
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: var(--bg);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.auth-overlay.active { display: flex; }
+.auth-card {
+    width: 100%;
+    max-width: 360px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+}
+.auth-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.auth-logo-icon .icon { width: 18px; height: 18px; }
+.auth-title { font-size: 18px; font-weight: 600; color: var(--text); margin-top: 8px; }
+.auth-sub { font-size: 13px; color: var(--text-3); line-height: 1.5; margin-bottom: 4px; }
+.auth-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition);
+}
+.auth-input:focus { border-color: var(--accent); background: var(--bg-elev-2); }
+.auth-err { font-size: 12.5px; color: var(--danger); min-height: 16px; line-height: 1.4; }
+.auth-submit {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.auth-submit:hover { background: var(--accent-hover); }
+.auth-submit:disabled { opacity: 0.6; cursor: default; }
+.auth-toggle { font-size: 13px; color: var(--text-3); text-align: center; margin-top: 4px; }
+.auth-toggle a { color: var(--accent); cursor: pointer; }
+.auth-toggle a:hover { text-decoration: underline; }
