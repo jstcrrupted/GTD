@@ -1211,7 +1211,8 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
 
 .subtask-add {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
     padding: 4px 8px;
 }
 
@@ -1226,6 +1227,26 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
 
 .subtask-add input::placeholder {
     color: var(--text-muted);
+}
+
+.subtask-add-btn {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.subtask-add-btn:hover {
+    color: var(--accent);
+    background: var(--bg-hover);
 }
 
 .detail-tags {
@@ -2332,13 +2353,15 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
     .modal-footer { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
 
     /* 3.1 Touch targets (min ~40px) + always-visible card actions */
-    .toolbar-icon-btn, .task-action-btn, .modal-close, .subtask-delete, .small-btn {
+    .toolbar-icon-btn, .task-action-btn, .modal-close, .subtask-delete, .subtask-add-btn, .small-btn {
         min-width: 40px;
         min-height: 40px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
     }
+    /* На мобильном кнопка удаления подзадачи всегда видна (нет hover) */
+    .subtask-item .subtask-delete { opacity: 1; }
     .detail-tag-remove {
         min-width: 24px;
         min-height: 24px;
