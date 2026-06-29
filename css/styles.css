@@ -1211,7 +1211,8 @@ input, textarea, button, select { font-family: inherit; user-select: text; }
 
 .subtask-add {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
     padding: 4px 8px;
 }
 
