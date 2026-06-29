@@ -3,7 +3,7 @@
 // ============ STORAGE: IndexedDB, persistence, backups ============
 import {
     state, STORAGE_KEY, generateId, escapeHtml, formatDateTime, todayStr,
-    toast, setSyncStatus
+    toast, setSyncStatus, bus
 } from './core.js';
 import { render } from './render.js';
 
@@ -190,6 +190,7 @@ export async function saveNow() {
     try {
         await idbPut(STORE_APP, packState(), 'state');
         setSyncStatus('Сохранено (IndexedDB)');
+        bus.emit('after-local-save');
     } catch (e) {
         console.error(e);
         setSyncStatus('Ошибка сохранения', false);

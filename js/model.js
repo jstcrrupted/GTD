@@ -160,6 +160,7 @@ export function trashTask(id, e) {
         toast('Удалено навсегда', 'success');
     } else {
         task.list = 'trash';
+        task.updatedAt = new Date().toISOString();
         addActivity(task, 'moved to trash');
         toast('Перемещено в корзину');
     }
@@ -207,6 +208,7 @@ export function updateSubtask(i, value) {
     } else {
         task.subtasks[i].text = value;
     }
+    task.updatedAt = new Date().toISOString();
     save();
     renderDetailBody(task);
 }
@@ -217,6 +219,7 @@ export function addSubtask(text) {
     if (!task) return;
     if (!task.subtasks) task.subtasks = [];
     task.subtasks.push({ text: text.trim(), done: false });
+    task.updatedAt = new Date().toISOString();
     save();
     renderDetailBody(task);
     renderContent();
@@ -226,6 +229,7 @@ export function deleteSubtask(i) {
     const task = state.tasks.find(t => t.id === state.selectedTaskId);
     if (!task) return;
     task.subtasks.splice(i, 1);
+    task.updatedAt = new Date().toISOString();
     save();
     renderDetailBody(task);
     renderContent();
@@ -239,8 +243,9 @@ export function addTag(name) {
     if (!task.tags) task.tags = [];
     if (task.tags.includes(name)) return;
     task.tags.push(name);
+    task.updatedAt = new Date().toISOString();
     if (!state.tags.find(t => t.name === name)) {
-        state.tags.push({ id: generateId(), name, color: TAG_COLORS[state.tags.length % TAG_COLORS.length] });
+        state.tags.push({ id: generateId(), name, color: TAG_COLORS[state.tags.length % TAG_COLORS.length], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
     }
     save();
     renderDetailBody(task);
@@ -252,6 +257,7 @@ export function removeTag(name) {
     const task = state.tasks.find(t => t.id === state.selectedTaskId);
     if (!task) return;
     task.tags = (task.tags || []).filter(t => t !== name);
+    task.updatedAt = new Date().toISOString();
     save();
     renderDetailBody(task);
     renderContent();

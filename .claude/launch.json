@@ -4,8 +4,8 @@
     {
       "name": "gtd",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-m", "http.server", "8124"],
-      "port": 8124
+      "runtimeArgs": ["tools/devserver.py", "8127"],
+      "port": 8127
     }
   ]
 }

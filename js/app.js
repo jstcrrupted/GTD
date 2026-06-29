@@ -44,6 +44,8 @@ import {
 
 import { showTaskContext, hideContextMenu, toggleSidebar, closeSidebar } from './keyboard.js';
 
+import { initAuth, signIn, signUp, signOut, toggleAuthMode } from './auth.js';
+
 // ============ REGISTER ALL ACTIONS ============
 registerActions({
     // Navigation / view
@@ -143,6 +145,12 @@ registerActions({
     handleGlobalSearch: (c) => handleGlobalSearch(c.event),
     clearSearch: () => clearSearch(),
     promptInstallPWA: () => promptInstallPWA(),
+
+    // Auth
+    signIn: () => signIn(),
+    signUp: () => signUp(),
+    signOut: () => signOut(),
+    toggleAuthMode: () => toggleAuthMode(),
 });
 
 // ============ WIRE UP DOM ============
@@ -184,16 +192,14 @@ if ('serviceWorker' in navigator) {
 
 // ============ INIT ============
 (async function initApp() {
-    const ok = await loadAppState();
-    if (!ok || (state.tasks.length === 0 && state.projects.length === 0)) {
-        seedDemoData();
-        await saveNow();
-        await createBackup('initial');
-    } else {
-        // make sure we have at least one backup
-        const latest = await loadLatestBackupObject();
-        if (!latest) await createBackup('initial');
-    }
+    // IndexedDB is the offline cache: load it first so the app works offline and
+    // provides local data for first-run reconciliation.
+    await loadAppState();
+    render();
+
+    // Ensure at least one backup if local data exists.
+    const latest = await loadLatestBackupObject();
+    if (!latest && (state.tasks.length || state.projects.length)) await createBackup('initial');
 
     // Autobackups
     setInterval(() => createBackup('auto'), 120000);
@@ -202,5 +208,7 @@ if ('serviceWorker' in navigator) {
         if (document.hidden) createBackup('visibility');
     });
 
-    render();
+    // Auth + cloud sync: shows the auth screen if signed out, otherwise hydrates
+    // from Supabase and subscribes to realtime updates.
+    await initAuth();
 })();

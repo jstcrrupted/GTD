@@ -255,6 +255,13 @@
         </div>
         <div class="modal-body">
             <div class="detail-field">
+                <div class="detail-field-label">Аккаунт</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                    <button class="toolbar-btn" style="color:var(--danger)" data-action="signOut"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-x"></use></svg> Выйти из аккаунта</button>
+                </div>
+            </div>
+
+            <div class="detail-field">
                 <div class="detail-field-label">Справка</div>
                 <div style="display:flex;flex-direction:column;gap:6px">
                     <button class="toolbar-btn" data-action="openShortcutsFromSettings"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-keyboard"></use></svg> Горячие клавиши</button>
@@ -319,6 +326,11 @@
 <!-- FILE INPUT -->
 <input type="file" id="fileInput" accept=".json" style="display:none" data-action="handleFileImport" data-on="change">
 
+<!-- AUTH OVERLAY (rendered by js/auth.js) -->
+<div class="auth-overlay" id="authOverlay"></div>
+
+<!-- Supabase (vendored UMD build → window.supabase) -->
+<script src="js/vendor/supabase.umd.js"></script>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
