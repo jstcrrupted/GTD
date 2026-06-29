@@ -90,6 +90,14 @@ registerActions({
     updateSubtask: (c) => updateSubtask(c.index, c.value),
     deleteSubtask: (c) => deleteSubtask(c.index),
     addSubtask: (c) => (addSubtask(c.value), c.el.value = ''),
+    addSubtaskBtn: (c) => {
+        const input = c.el.closest('.subtask-add')?.querySelector('input');
+        if (!input) return;
+        if (!input.value.trim()) { input.focus(); return; }
+        addSubtask(input.value); // пересоздаёт тело детали
+        // фокусируем новое поле, чтобы на мобильном клавиатура не закрывалась
+        document.querySelector('.subtask-add input')?.focus();
+    },
     addTag: (c) => (addTag(c.value.replace(',', '')), c.el.value = ''),
     removeTag: (c) => removeTag(c.tag),
     duplicateTask: () => duplicateTask(),

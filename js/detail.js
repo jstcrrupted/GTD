@@ -53,6 +53,7 @@ export function renderDetailBody(task) {
                 <div class="subtask-add">
                     <div class="subtask-check"></div>
                     <input type="text" placeholder="Добавить подзадачу..." data-action="addSubtask" data-on="enter">
+                    <button class="subtask-add-btn" data-action="addSubtaskBtn" aria-label="Добавить подзадачу">${icon('plus')}</button>
                 </div>
             </div>
         </div>
